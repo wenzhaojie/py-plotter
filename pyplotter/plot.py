@@ -286,13 +286,13 @@ class Plotter(Pyplot_config):
             plt.show()
 
 
-    def plot_grids(self, ms: list, ns: list, ys: list, x_label='Memory Size (MB)', y_label='Jobs', legend_label="Relative Error", save_root="./",
+    def plot_grids(self, ms: list, ns: list, ys: list, x_label="Memory Size (MB)", y_label="Jobs", legend_label="Relative Error", save_root="./",
         filename="plot_grid_demo", is_show=False):
         # 绘制误差率的网格图
         fig = plt.figure(dpi=300, figsize=(8, 6))
         ax = plt.subplot(111)
 
-        mapping = {}  # 从(memory size, image num)到误差率的映射
+        mapping = {} # 从(memory size, image num)到误差率的映射
         for m, n, error in zip(ms, ns, ys):
             mapping[(m, n)] = error
 
