@@ -66,11 +66,12 @@ class Plotter(Pyplot_config):
         plt.yticks(fontsize=self.tick_size)
 
         plt.tight_layout()
-        if is_show:
-            plt.show()
         savepath = os.path.join(save_root, filename)
         print(f"图片保存到:{savepath}")
         plt.savefig(savepath)
+        # 展示图片
+        if is_show:
+            plt.show()
 
     # 绘制条形图
     def plot_bars(self, x_label="x", y_label="y", legend_title="legend", legend_ncol=1, bbox_to_anchor=None,
@@ -85,7 +86,6 @@ class Plotter(Pyplot_config):
 
         # 分别画柱子
         r_base = np.arange(len(x_data))
-        # print(len(x_data))
         # 是否用阴影hatch区别
         if is_hatch:
             hatch_list = self.hatch_list
@@ -113,8 +113,6 @@ class Plotter(Pyplot_config):
             plt.ylim(y_min, y_max)
         plt.tight_layout()
 
-        if is_show:
-            plt.show()
         savepath = os.path.join(save_root, filename)
         print(f"图片保存到:{savepath}")
         plt.savefig(savepath)
@@ -180,9 +178,6 @@ class Plotter(Pyplot_config):
         legend._legend_box.align = "left"
 
         plt.tight_layout()
-
-        if is_show:
-            plt.show()
         savepath = os.path.join(save_root, filename)
         print(f"图片保存到:{savepath}")
         plt.savefig(savepath)
