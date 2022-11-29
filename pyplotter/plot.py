@@ -286,6 +286,42 @@ class Plotter(Pyplot_config):
             plt.show()
 
 
+    def plot_grids(self, ms: list, ns: list, ys: list, x_label='Memory Size (MB)', y_label='Jobs', legend_label="Relative Error", save_root="./",
+        filename="plot_grid_demo", is_show=False):
+        # 绘制误差率的网格图
+        fig = plt.figure(dpi=300, figsize=(8, 6))
+        ax = plt.subplot(111)
+
+        mapping = {}  # 从(memory size, image num)到误差率的映射
+        for m, n, error in zip(ms, ns, ys):
+            mapping[(m, n)] = error
+
+        u_ms, u_ns = np.sort(np.unique(ms)), np.sort(np.unique(ns))
+        xticks, yticks = range(len(u_ms)), range(len(u_ns))
+        Xs, Ys = np.meshgrid(xticks, yticks)
+        zs = [[mapping.setdefault((u_ms[Xs[i][j]], u_ns[Ys[i][j]]), 0) for j in range(len(xticks))] for i in
+              range(len(yticks))]
+        graph = ax.pcolor(Xs, Ys, zs, shading='auto')
+        cb = fig.colorbar(graph)
+        cb.ax.tick_params(labelsize=self.label_size)
+        cb.set_label(legend_label, fontdict={'size': self.label_size})
+
+        # 设置x轴和y轴的标签字体和大小
+        ax.set_xlabel(x_label, fontdict={'size': self.label_size})
+        ax.set_ylabel(y_label, fontdict={'size': self.label_size})
+        # 设置x轴和y轴的刻度字体和大小
+        plt.xticks(xticks, u_ms.astype(int), size=self.label_size)
+        plt.yticks(yticks, u_ns.astype(int), size=self.label_size)
+
+        plt.tight_layout()
+        savepath = os.path.join(save_root, filename)
+        print(f"图片保存到:{savepath}")
+        plt.savefig(savepath)
+        # 展示图片
+        if is_show:
+            plt.show()
+
+
 if __name__ == "__main__":
     my_plotter = Plotter(figsize=(8, 6))
 
@@ -338,5 +374,16 @@ if __name__ == "__main__":
         legend_label="Error",
         save_root="./",
         filename="plot_error_grids_demo"
+    )
+
+    my_plotter.plot_grids(
+        ms=[1, 1, 1, 2, 2, 3, 3, 3, 3],
+        ns=[4, 5, 6, 4, 5, 6, 4, 5, 6],
+        ys=[1.1,2.2,1.3,1.4,4.5,1.6,1.7,1.8,4.9],
+        x_label="X",
+        y_label="Y",
+        legend_label="Error",
+        save_root="./",
+        filename="plot_grids_demo"
     )
 
