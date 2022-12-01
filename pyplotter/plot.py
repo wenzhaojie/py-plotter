@@ -227,11 +227,16 @@ class Plotter(Pyplot_config):
 
         offset = interval * (len(legend_label_list) - 1) / 2
         ax.set_xticks([pos + offset for pos in position])
+
+        #####
+        x = [int(item) for item in x]
+        #####
+
         ax.set_xticklabels(x, fontsize=14, rotation=0)
         ax.tick_params(axis='both', which='major', labelsize=14)
 
-        ax.yaxis.set_major_formatter(mtick.FormatStrFormatter('%.d'))
-        ax.xaxis.set_major_formatter(mtick.FormatStrFormatter('%.d'))
+        # ax.yaxis.set_major_formatter(mtick.FormatStrFormatter('%.d'))
+        # ax.xaxis.set_major_formatter(mtick.FormatStrFormatter('%.d'))
 
         plt.xticks(size=self.label_size)
         plt.yticks(size=self.label_size)
@@ -340,7 +345,7 @@ if __name__ == "__main__":
     )
 
     my_plotter.plot_boxes(
-        x=[0, 1, 2, 3],
+        x=['2', '1', '2', '3'],
         box_data_list=[[y1, y2, y3, y4], [y2, y3, y4, y5]],
         legend_label_list=["1234", "2345"],
         x_label="x",
