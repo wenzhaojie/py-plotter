@@ -4,8 +4,7 @@ import os
 import numpy as np
 from matplotlib.ticker import FuncFormatter
 from scipy import stats
-
-import matplotlib.ticker as mtick
+from typing import List
 
 
 class Pyplot_config:
@@ -187,7 +186,7 @@ class Plotter(Pyplot_config):
         pass
 
     # 绘制 box 图
-    def plot_boxes(self, x=None, box_data_list=None, legend_label_list=None, x_label="Replicas", y_label="Cost",
+    def plot_boxes(self, x: List[str]=None, box_data_list=None, legend_label_list=None, x_label="Replicas", y_label="Cost",
                   legend_title="legend", legend_loc="best", legend_ncol=1, bbox_to_anchor=None, save_root="./",
                   filename="demo.png", is_show=False):
 
@@ -203,8 +202,8 @@ class Plotter(Pyplot_config):
         interval_xtick = interval * (len(legend_label_list) - 1) + space
         position = np.arange(1, 1 + interval_xtick * len(x), interval_xtick)
 
-        colors = ['red', 'darkblue', 'limegreen']
-        facecolors = ['pink', 'lightblue', 'lightgreen']
+        colors = ['red', 'darkblue', 'darkgreen', 'purple','gold']
+        facecolors = ['pink', 'lightblue', 'lightgreen', 'violet','yellow']
         boxes = []
 
         for i in range(len(legend_label_list)):
@@ -228,15 +227,10 @@ class Plotter(Pyplot_config):
         offset = interval * (len(legend_label_list) - 1) / 2
         ax.set_xticks([pos + offset for pos in position])
 
-        #####
-        x = [int(item) for item in x]
-        #####
 
         ax.set_xticklabels(x, fontsize=14, rotation=0)
         ax.tick_params(axis='both', which='major', labelsize=14)
 
-        # ax.yaxis.set_major_formatter(mtick.FormatStrFormatter('%.d'))
-        # ax.xaxis.set_major_formatter(mtick.FormatStrFormatter('%.d'))
 
         plt.xticks(size=self.label_size)
         plt.yticks(size=self.label_size)
@@ -291,17 +285,17 @@ class Plotter(Pyplot_config):
             plt.show()
 
 
-    def plot_grids(self, ms: list, ns: list, ys: list, x_label="Memory Size (MB)", y_label="Jobs", legend_label="Relative Error", save_root="./",
+    def plot_grids(self, x_list: list, y_list: list, z_list: list, x_label="Memory Size (MB)", y_label="Jobs", legend_label="Relative Error", save_root="./",
         filename="plot_grid_demo", is_show=False):
         # 绘制误差率的网格图
         fig = plt.figure(dpi=300, figsize=(8, 6))
         ax = plt.subplot(111)
 
         mapping = {} # 从(memory size, image num)到误差率的映射
-        for m, n, error in zip(ms, ns, ys):
+        for m, n, error in zip(x_list, y_list, z_list):
             mapping[(m, n)] = error
 
-        u_ms, u_ns = np.sort(np.unique(ms)), np.sort(np.unique(ns))
+        u_ms, u_ns = np.sort(np.unique(x_list)), np.sort(np.unique(y_list))
         xticks, yticks = range(len(u_ms)), range(len(u_ns))
         Xs, Ys = np.meshgrid(xticks, yticks)
         zs = [[mapping.setdefault((u_ms[Xs[i][j]], u_ns[Ys[i][j]]), 0) for j in range(len(xticks))] for i in
@@ -337,17 +331,22 @@ if __name__ == "__main__":
     y5 = [0, 2, 3, 4, 2, 1, 6, 8, 5, 1]
 
     my_plotter.plot_lines(
+        x_list=[[i for i in range(len(y1))] for i in range(5)],
         y_list=[y1,y2,y3,y4,y5],
         legend_label_list=["y1","y2","y3","y4","y5"],
+        x_label="X",
+        y_label="Y",
+        legend_loc="best",
+        legend_title="Legend",
         title="This is a demo!",
         save_root="./",
         filename="plot_lines_demo"
     )
 
     my_plotter.plot_boxes(
-        x=['2', '1', '2', '3'],
-        box_data_list=[[y1, y2, y3, y4], [y2, y3, y4, y5]],
-        legend_label_list=["1234", "2345"],
+        x=["2.0", "1.0", "3", "5"],
+        box_data_list=[[y1, y2, y3, y4], [y2, y3, y4, y5], [y3, y4, y5, y1], [y4, y5, y1, y2]],
+        legend_label_list=["1234", "2345", "3451", "4512"],
         x_label="x",
         y_label="y",
         save_root="./",
@@ -355,7 +354,7 @@ if __name__ == "__main__":
     )
 
     my_plotter.plot_bars(
-        x_data=[0,1,2,3],
+        x_data=["0","1.0","2","3.5"],
         bar_data_list=[
             [1,2,3,4],
             [2,3,4,5],
@@ -382,9 +381,9 @@ if __name__ == "__main__":
     )
 
     my_plotter.plot_grids(
-        ms=[1, 1, 1, 2, 2, 3, 3, 3, 3],
-        ns=[4, 5, 6, 4, 5, 6, 4, 5, 6],
-        ys=[1.1,2.2,1.3,1.4,4.5,1.6,1.7,1.8,4.9],
+        x_list=[1, 1, 1, 2, 2, 3, 3, 3, 3],
+        y_list=[4, 5, 6, 4, 5, 6, 4, 5, 6],
+        z_list=[1.1,2.2,1.3,1.4,4.5,1.6,1.7,1.8,4.9],
         x_label="X",
         y_label="Y",
         legend_label="Error",
