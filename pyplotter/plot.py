@@ -32,7 +32,7 @@ class Plotter(Pyplot_config):
         pass
 
     # 用于画折线图, 有几条线就画几个
-    def plot_lines(self, x_list=None, y_list=None, legend_label_list=None, x_label="x", y_label="y", title=None,
+    def plot_lines(self, x_list=None, y_list=None, legend_label_list=None, x_label="x", y_label="y", title=None, x_grid=False, y_grid=True, y_min=None, y_max=None,
                    save_root="./", filename="demo.png", is_show=False,
                    legend_loc="best", legend_title="legend"):
         # 如果 save_root 没有创建，则创建一个
@@ -64,6 +64,22 @@ class Plotter(Pyplot_config):
         plt.xticks(fontsize=self.tick_size)
         plt.yticks(fontsize=self.tick_size)
 
+        # 网格线
+        if x_grid and y_grid:
+            cmd = "both"
+            plt.grid(axis=cmd)
+        else:
+            if x_grid:
+                cmd = "x"
+                plt.grid(axis=cmd)
+            if y_grid:
+                cmd = "y"
+                plt.grid(axis=cmd)
+
+        # 设置ylim
+        if y_min != None and y_max != None:
+            plt.ylim(y_min, y_max)
+
         plt.tight_layout()
         savepath = os.path.join(save_root, filename)
         print(f"图片保存到:{savepath}")
@@ -75,7 +91,7 @@ class Plotter(Pyplot_config):
     # 绘制条形图
     def plot_bars(self, x_label="x", y_label="y", legend_title="legend", legend_ncol=1, bbox_to_anchor=None,
                   legend_loc="best", x_data=None, bar_data_list=None, legend_label_list=None, y_min=None, y_max=None,
-                  save_root="./", filename="demo.png", is_hatch=False,
+                  x_grid=False, y_grid=True, save_root="./", filename="demo.png", is_hatch=False,
                   is_show=False):
         fig = plt.figure(figsize=self.figsize, dpi=self.dpi)
         ax = plt.subplot(111)
@@ -106,6 +122,18 @@ class Plotter(Pyplot_config):
                             bbox_to_anchor=bbox_to_anchor)
         legend.get_title().set_fontsize(fontsize=self.legend_size)
         legend._legend_box.align = "left"
+
+        # 网格线
+        if x_grid and y_grid:
+            cmd = "both"
+            plt.grid(axis=cmd)
+        else:
+            if x_grid:
+                cmd = "x"
+                plt.grid(axis=cmd)
+            if y_grid:
+                cmd = "y"
+                plt.grid(axis=cmd)
 
         # 设置ylim
         if y_min != None and y_max != None:
@@ -228,8 +256,8 @@ class Plotter(Pyplot_config):
         ax.set_xticks([pos + offset for pos in position])
 
 
-        ax.set_xticklabels(x, fontsize=14, rotation=0)
-        ax.tick_params(axis='both', which='major', labelsize=14)
+        ax.set_xticklabels(x, fontsize=self.label_size, rotation=0)
+        ax.tick_params(axis='both', which='major', labelsize=self.label_size)
 
 
         plt.xticks(size=self.label_size)
@@ -336,6 +364,10 @@ if __name__ == "__main__":
         legend_label_list=["y1","y2","y3","y4","y5"],
         x_label="X",
         y_label="Y",
+        x_grid=True,
+        y_grid=True,
+        y_min=0,
+        y_max=10,
         legend_loc="best",
         legend_title="Legend",
         title="This is a demo!",
