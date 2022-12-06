@@ -316,7 +316,7 @@ class Plotter(Pyplot_config):
     def plot_grids(self, x_list: list, y_list: list, z_list: list, x_label="Memory Size (MB)", y_label="Jobs", legend_label="Relative Error", save_root="./",
         filename="plot_grid_demo", is_show=False):
         # 绘制误差率的网格图
-        fig = plt.figure(dpi=300, figsize=(8, 6))
+        fig = plt.figure(dpi=self.dpi, figsize=self.figsize)
         ax = plt.subplot(111)
 
         mapping = {} # 从(memory size, image num)到误差率的映射
@@ -349,6 +349,65 @@ class Plotter(Pyplot_config):
             plt.show()
 
 
+    def plot_acc_bars(self, x_data=None, bar_data_list=None, bar_width=0.35, x_label="x", y_label="y", legend_loc="best", legend_title="legend", legend_ncol=1, bbox_to_anchor=None,
+                    legend_label_list=None, y_min=None, y_max=None,
+                  x_grid=False, y_grid=True, save_root="./", filename="plot_acc_bars_demo", is_hatch=False,
+                  is_show=False):
+
+        fig = plt.figure(dpi=self.dpi, figsize=self.figsize)
+        ax = plt.subplot(111)
+        # 设置轴的标签字体和大小
+        ax.set_xlabel(x_label, fontdict={'size': self.label_size})
+        ax.set_ylabel(y_label, fontdict={'size': self.label_size})
+
+        ind = np.arange(len(bar_data_list))  # the x locations for the groups
+        bottom = [0 for i in range(len(bar_data_list[0]))]
+        for index, bar_data in enumerate(bar_data_list):
+
+            ax.bar(ind, bar_data_list[index], bar_width, label=legend_label_list[index], color=self.color_list[index], edgecolor=self.edge_color_list[index], bottom=bottom)
+
+            # 更新 bottom
+            for i in range(len(bottom)):
+                bottom[i] += bar_data[i]
+
+        # 添加x轴名称
+        plt.xticks(ticks=ind, size=self.label_size, labels=legend_label_list)
+        plt.yticks(size=self.label_size)
+
+        # 创建图例
+        legend = plt.legend(fontsize=self.legend_size, title=legend_title, loc=legend_loc,
+                            ncol=legend_ncol,
+                            bbox_to_anchor=bbox_to_anchor)
+        legend.get_title().set_fontsize(fontsize=self.legend_size)
+        legend._legend_box.align = "left"
+
+        # 网格线
+        if x_grid and y_grid:
+            cmd = "both"
+            plt.grid(axis=cmd)
+        else:
+            if x_grid:
+                cmd = "x"
+                plt.grid(axis=cmd)
+            if y_grid:
+                cmd = "y"
+                plt.grid(axis=cmd)
+
+        # 设置ylim
+        if y_min != None and y_max != None:
+            plt.ylim(y_min, y_max)
+
+        plt.tight_layout()
+        savepath = os.path.join(save_root, filename)
+        print(f"图片保存到:{savepath}")
+        plt.savefig(savepath)
+        # 展示图片
+        if is_show:
+            plt.show()
+
+
+
+
 if __name__ == "__main__":
     my_plotter = Plotter(figsize=(8, 6))
 
@@ -371,7 +430,7 @@ if __name__ == "__main__":
         legend_loc="best",
         legend_title="Legend",
         title="This is a demo!",
-        save_root="./",
+        save_root="./results",
         filename="plot_lines_demo"
     )
 
@@ -381,7 +440,7 @@ if __name__ == "__main__":
         legend_label_list=["1234", "2345", "3451", "4512"],
         x_label="x",
         y_label="y",
-        save_root="./",
+        save_root="./results",
         filename="plot_boxes_demo"
     )
 
@@ -396,7 +455,7 @@ if __name__ == "__main__":
         legend_label_list=["1","2","3","4"],
         x_label="X",
         y_label="Y",
-        save_root="./",
+        save_root="./results",
         filename="plot_bars_demo"
     )
 
@@ -408,7 +467,7 @@ if __name__ == "__main__":
         x_label="X",
         y_label="Y",
         legend_label="Error",
-        save_root="./",
+        save_root="./results",
         filename="plot_error_grids_demo"
     )
 
@@ -419,7 +478,24 @@ if __name__ == "__main__":
         x_label="X",
         y_label="Y",
         legend_label="Error",
-        save_root="./",
+        save_root="./results",
         filename="plot_grids_demo"
+    )
+
+    my_plotter.plot_acc_bars(
+        x_data=["0", "1.0", "2", "3.5"],
+        bar_data_list=[
+            [1, 2, 3, 4],
+            [2, 3, 4, 5],
+            [3, 4, 5, 6],
+            [7, 8, 9, 10]
+        ],
+        legend_label_list=["1", "2", "3", "4"],
+        x_label="X",
+        y_label="Y",
+        save_root="./results",
+        filename="plot_acc_bars_demo",
+        y_min=0,
+        y_max=40,
     )
 
