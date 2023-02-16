@@ -488,6 +488,15 @@ if __name__ == "__main__":
         filename="plot_lines_demo"
     )
 
+    my_plotter.plot_cdfs_1(
+        cdf_data_list=[y1,y2,y3,y4,y5],
+        legend_label_list=["y1", "y2", "y3", "y4", "y5"],
+        legend_loc="best",
+        legend_title="Legend",
+        save_root="./results",
+        filename="plot_cdfs_demo"
+    )
+
     my_plotter.plot_boxes(
         x=["2.0", "1.0", "3", "5"],
         box_data_list=[[y1, y2, y3, y4], [y2, y3, y4, y5], [y3, y4, y5, y1], [y4, y5, y1, y2]],
