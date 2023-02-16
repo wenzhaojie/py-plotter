@@ -152,7 +152,7 @@ class Plotter(Pyplot_config):
     def formatnum(x, pos):
         if x == 0:
             return f'{int(x)}'
-        return "%.1f" % x
+        return "%.2f" % x
 
     @staticmethod
     def cal_cdf(input_data):
