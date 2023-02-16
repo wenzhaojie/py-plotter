@@ -213,6 +213,60 @@ class Plotter(Pyplot_config):
             plt.show()
         pass
 
+
+    def plot_cdfs_1(self, x_label="x", y_label="cdf", legend_title="legend", legend_ncol=1, bbox_to_anchor=None,
+                  legend_loc="best", cdf_data_list=None, legend_label_list=None, is_marker=False, linewidth=2, alpha=1,
+                  save_root="./", filename="demo.png", is_show=False):
+        # 画布
+        fig = plt.figure(figsize=self.figsize, dpi=self.dpi)
+        ax = fig.add_subplot(111)
+        # 设置轴的标签字体和大小
+        ax.set_xlabel(x_label, fontdict={'size': self.label_size})
+        ax.set_ylabel(y_label, fontdict={'size': self.label_size})
+        # 调整 tick 的字体大小
+        plt.xticks(fontsize=self.tick_size)
+        plt.yticks(fontsize=self.tick_size)
+        # 让角标变0
+        formatter = FuncFormatter(self.formatnum)
+        ax.xaxis.set_major_formatter(formatter)
+        ax.yaxis.set_major_formatter(formatter)
+        # 计算cdf的值
+        for index, (cdf_data, cdf_label) in enumerate(zip(cdf_data_list, legend_label_list)):
+            counts, bin_edges = np.histogram(cdf_data, bins=100, density=True)
+            cdf = np.cumsum(counts)
+            x = bin_edges[1:]
+            y = cdf
+            # 画图
+            if is_marker:
+                marker = self.marker_list[index]
+            else:
+                marker = None
+            ax.plot(
+                x, y,
+                color=self.color_list[index],
+                linestyle=self.linestyle_list[index],
+                dashes=self.dash_list[index],
+                marker=marker,
+                linewidth=linewidth,
+                alpha=alpha,
+                label=cdf_label,
+            )
+        # 创建图例
+        legend = plt.legend(fontsize=self.legend_size, title=legend_title, loc=legend_loc, ncol=legend_ncol,
+                            bbox_to_anchor=bbox_to_anchor)
+        legend.get_title().set_fontsize(fontsize=self.legend_size)
+        legend._legend_box.align = "left"
+
+        plt.tight_layout()
+        savepath = os.path.join(save_root, filename)
+        print(f"图片保存到:{savepath}")
+        plt.savefig(savepath)
+        # 展示图片
+        if is_show:
+            plt.show()
+        pass
+
+
     # 绘制 box 图
     def plot_boxes(self, x: List[str]=None, box_data_list=None, legend_label_list=None, x_label="Replicas", y_label="Cost",
                   legend_title="legend", legend_loc="best", legend_ncol=1, bbox_to_anchor=None, save_root="./",
