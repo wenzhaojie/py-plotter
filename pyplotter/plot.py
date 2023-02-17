@@ -33,7 +33,8 @@ class Plotter(Pyplot_config):
         pass
 
     # 用于画折线图, 有几条线就画几个
-    def plot_lines(self, x_list=None, y_list=None, legend_label_list=None, x_label="x", y_label="y", title=None, x_grid=False, y_grid=True, y_min=None, y_max=None,
+    def plot_lines(self, x_list=None, y_list=None, legend_label_list=None, x_label="x", y_label="y", title=None,
+                   x_grid=False, y_grid=True, y_min=None, y_max=None, x_tick_ndigits=1, y_tick_ndigits=2,
                    save_root="./", filename="demo.png", is_show=False,
                    legend_loc="best", legend_title="legend"):
         # 如果 save_root 没有创建，则创建一个
@@ -60,6 +61,13 @@ class Plotter(Pyplot_config):
         if legend_label_list != None:
             plt.legend(fontsize=self.legend_size, loc=legend_loc, title=legend_title,
                        title_fontsize=self.legend_size)  # 将样例显示出来
+
+        # 让角标变0
+        ax = plt.gca()
+        x_formatter = CustomFormatter(ndigits=x_tick_ndigits)
+        y_formatter = CustomFormatter(ndigits=y_tick_ndigits)
+        ax.xaxis.set_major_formatter(x_formatter)
+        ax.yaxis.set_major_formatter(y_formatter)
 
         # 调整 tick 的字体大小
         plt.xticks(fontsize=self.tick_size)
@@ -90,7 +98,7 @@ class Plotter(Pyplot_config):
             plt.show()
 
     # 绘制条形图
-    def plot_bars(self, x_label="x", y_label="y", legend_title="legend", legend_ncol=1, bbox_to_anchor=None,
+    def plot_bars(self, x_label="x", y_label="y", legend_title="legend", legend_ncol=1, bbox_to_anchor=None, x_tick_ndigits=1, y_tick_ndigits=2,
                   legend_loc="best", x_data=None, bar_data_list=None, legend_label_list=None, y_min=None, y_max=None,
                   x_grid=False, y_grid=True, save_root="./", filename="demo.png", is_hatch=False,
                   is_show=False):
@@ -117,6 +125,11 @@ class Plotter(Pyplot_config):
         plt.xticks([r + (len(bar_data_list) - 1) / 2 * self.bar_width for r in range(len(x_data))], x_data,
                    size=self.label_size)
         plt.yticks(size=self.label_size)
+
+        # 让角标变0
+        ax = plt.gca()
+        y_formatter = CustomFormatter(ndigits=y_tick_ndigits)
+        ax.yaxis.set_major_formatter(y_formatter)
 
         # 创建图例
         legend = plt.legend(fontsize=self.legend_size, title=legend_title, loc=legend_loc, ncol=legend_ncol,
@@ -150,12 +163,6 @@ class Plotter(Pyplot_config):
         pass
 
     @staticmethod
-    def formatnum(x, pos, cmd="%.2f"):
-        if x == 0:
-            return f'{int(x)}'
-        return cmd % x
-
-    @staticmethod
     def cal_cdf(input_data):
         val, cnt = np.unique(input_data, return_counts=True)
         pmf = cnt / len(input_data)
@@ -179,7 +186,6 @@ class Plotter(Pyplot_config):
         # 让角标变0
         x_formatter = CustomFormatter(ndigits=x_tick_ndigits)
         y_formatter = CustomFormatter(ndigits=y_tick_ndigits)
-
         ax.xaxis.set_major_formatter(x_formatter)
         ax.yaxis.set_major_formatter(y_formatter)
 
@@ -219,63 +225,10 @@ class Plotter(Pyplot_config):
         pass
 
 
-    def plot_cdfs_1(self, x_label="x", y_label="cdf", legend_title="legend", legend_ncol=1, bbox_to_anchor=None,
-                  legend_loc="best", cdf_data_list=None, legend_label_list=None, is_marker=False, linewidth=2, alpha=1,
-                  save_root="./", filename="demo.png", is_show=False):
-        # 画布
-        fig = plt.figure(figsize=self.figsize, dpi=self.dpi)
-        ax = fig.add_subplot(111)
-        # 设置轴的标签字体和大小
-        ax.set_xlabel(x_label, fontdict={'size': self.label_size})
-        ax.set_ylabel(y_label, fontdict={'size': self.label_size})
-        # 调整 tick 的字体大小
-        plt.xticks(fontsize=self.tick_size)
-        plt.yticks(fontsize=self.tick_size)
-        # 让角标变0
-        formatter = FuncFormatter(self.formatnum)
-        ax.xaxis.set_major_formatter(formatter)
-        ax.yaxis.set_major_formatter(formatter)
-        # 计算cdf的值
-        for index, (cdf_data, cdf_label) in enumerate(zip(cdf_data_list, legend_label_list)):
-            counts, bin_edges = np.histogram(cdf_data, bins=100, density=True)
-            cdf = np.cumsum(counts)
-            x = bin_edges[1:]
-            y = cdf
-            # 画图
-            if is_marker:
-                marker = self.marker_list[index]
-            else:
-                marker = None
-            ax.plot(
-                x, y,
-                color=self.color_list[index],
-                linestyle=self.linestyle_list[index],
-                dashes=self.dash_list[index],
-                marker=marker,
-                linewidth=linewidth,
-                alpha=alpha,
-                label=cdf_label,
-            )
-        # 创建图例
-        legend = plt.legend(fontsize=self.legend_size, title=legend_title, loc=legend_loc, ncol=legend_ncol,
-                            bbox_to_anchor=bbox_to_anchor)
-        legend.get_title().set_fontsize(fontsize=self.legend_size)
-        legend._legend_box.align = "left"
-
-        plt.tight_layout()
-        savepath = os.path.join(save_root, filename)
-        print(f"图片保存到:{savepath}")
-        plt.savefig(savepath)
-        # 展示图片
-        if is_show:
-            plt.show()
-        pass
-
-
     # 绘制 box 图
     def plot_boxes(self, x: List[str]=None, box_data_list=None, legend_label_list=None, x_label="Replicas", y_label="Cost",
-                  legend_title="legend", legend_loc="best", legend_ncol=1, bbox_to_anchor=None, save_root="./",
-                  filename="demo.png", is_show=False):
+                  legend_title="legend", legend_loc="best", legend_ncol=1, bbox_to_anchor=None, x_tick_ndigits=1, y_tick_ndigits=2,
+                   save_root="./", filename="demo.png", is_show=False):
 
         fig = plt.figure(figsize=self.figsize, dpi=300)
         ax = fig.add_subplot(111)
@@ -317,6 +270,11 @@ class Plotter(Pyplot_config):
 
         ax.set_xticklabels(x, fontsize=self.label_size, rotation=0)
         ax.tick_params(axis='both', which='major', labelsize=self.label_size)
+
+        # 让角标变0
+        ax = plt.gca()
+        y_formatter = CustomFormatter(ndigits=y_tick_ndigits)
+        ax.yaxis.set_major_formatter(y_formatter)
 
 
         plt.xticks(size=self.label_size)
