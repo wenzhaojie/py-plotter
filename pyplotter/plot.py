@@ -5,6 +5,7 @@ import numpy as np
 from matplotlib.ticker import FuncFormatter
 from scipy import stats
 from typing import List
+from pyplotter.tick_formatter import CustomFormatter
 
 
 class Pyplot_config:
@@ -149,10 +150,10 @@ class Plotter(Pyplot_config):
         pass
 
     @staticmethod
-    def formatnum(x, pos):
+    def formatnum(x, pos, cmd="%.2f"):
         if x == 0:
             return f'{int(x)}'
-        return "%.2f" % x
+        return cmd % x
 
     @staticmethod
     def cal_cdf(input_data):
@@ -162,7 +163,7 @@ class Plotter(Pyplot_config):
         return {"x": val, "y": fs_rv_dist.cdf(val)}
 
     # 绘制 cdf 图
-    def plot_cdfs(self, x_label="x", y_label="cdf", legend_title="legend", legend_ncol=1, bbox_to_anchor=None,
+    def plot_cdfs(self, x_label="x", y_label="cdf", legend_title="legend", legend_ncol=1, bbox_to_anchor=None, x_tick_ndigits=1, y_tick_ndigits=2,
                   legend_loc="best", cdf_data_list=None, legend_label_list=None, is_marker=False, linewidth=2, alpha=1,
                   save_root="./", filename="demo.png", is_show=False):
         # 画布
@@ -174,10 +175,14 @@ class Plotter(Pyplot_config):
         # 调整 tick 的字体大小
         plt.xticks(fontsize=self.tick_size)
         plt.yticks(fontsize=self.tick_size)
+
         # 让角标变0
-        formatter = FuncFormatter(self.formatnum)
-        ax.xaxis.set_major_formatter(formatter)
-        ax.yaxis.set_major_formatter(formatter)
+        x_formatter = CustomFormatter(ndigits=x_tick_ndigits)
+        y_formatter = CustomFormatter(ndigits=y_tick_ndigits)
+
+        ax.xaxis.set_major_formatter(x_formatter)
+        ax.yaxis.set_major_formatter(y_formatter)
+
         # 计算cdf的值
         for index, (cdf_data, cdf_label) in enumerate(zip(cdf_data_list, legend_label_list)):
             res = self.cal_cdf(cdf_data)
@@ -488,7 +493,7 @@ if __name__ == "__main__":
         filename="plot_lines_demo"
     )
 
-    my_plotter.plot_cdfs_1(
+    my_plotter.plot_cdfs(
         cdf_data_list=[y1,y2,y3,y4,y5],
         legend_label_list=["y1", "y2", "y3", "y4", "y5"],
         legend_loc="best",
