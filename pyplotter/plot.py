@@ -382,7 +382,7 @@ class Plotter(Pyplot_config):
         if is_show:
             plt.show()
 
-    def plot_acc_bars(self, x_data=None, bar_data_list=None, bar_width=0.35, x_label="x", y_label="y",
+    def plot_acc_bars(self, bar_data_list=None, bar_width=0.35, x_label="x", y_label="y",
                       legend_loc="best", legend_title="legend", legend_ncol=1, bbox_to_anchor=None,
                       legend_label_list=None, y_min=None, y_max=None,
                       x_grid=False, y_grid=True, save_root="./", filename="plot_acc_bars_demo", is_hatch=False,
