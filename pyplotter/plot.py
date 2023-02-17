@@ -98,8 +98,7 @@ class Plotter(Pyplot_config):
             plt.show()
 
     # 绘制条形图
-    def plot_bars(self, x_label="x", y_label="y", legend_title="legend", legend_ncol=1, bbox_to_anchor=None,
-                  x_tick_ndigits=1, y_tick_ndigits=2,
+    def plot_bars(self, x_label="x", y_label="y", legend_title="legend", legend_ncol=1, bbox_to_anchor=None, y_tick_ndigits=2,
                   legend_loc="best", x_data=None, bar_data_list=None, legend_label_list=None, y_min=None, y_max=None,
                   x_grid=False, y_grid=True, save_root="./", filename="demo.png", is_hatch=False,
                   is_show=False):
@@ -230,7 +229,7 @@ class Plotter(Pyplot_config):
     # 绘制 box 图
     def plot_boxes(self, x: List[str] = None, box_data_list=None, legend_label_list=None, x_label="Replicas",
                    y_label="Cost",
-                   legend_title="legend", legend_loc="best", legend_ncol=1, bbox_to_anchor=None, x_tick_ndigits=1,
+                   legend_title="legend", legend_loc="best", legend_ncol=1, bbox_to_anchor=None,
                    y_tick_ndigits=2,
                    save_root="./", filename="demo.png", is_show=False):
 
