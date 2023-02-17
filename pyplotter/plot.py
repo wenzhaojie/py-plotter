@@ -98,7 +98,8 @@ class Plotter(Pyplot_config):
             plt.show()
 
     # 绘制条形图
-    def plot_bars(self, x_label="x", y_label="y", legend_title="legend", legend_ncol=1, bbox_to_anchor=None, x_tick_ndigits=1, y_tick_ndigits=2,
+    def plot_bars(self, x_label="x", y_label="y", legend_title="legend", legend_ncol=1, bbox_to_anchor=None,
+                  x_tick_ndigits=1, y_tick_ndigits=2,
                   legend_loc="best", x_data=None, bar_data_list=None, legend_label_list=None, y_min=None, y_max=None,
                   x_grid=False, y_grid=True, save_root="./", filename="demo.png", is_hatch=False,
                   is_show=False):
@@ -119,7 +120,8 @@ class Plotter(Pyplot_config):
         for index, (bar_label, bar_data) in enumerate(zip(legend_label_list, bar_data_list)):
             r = [x + self.bar_width * (index) for x in r_base]
             ax.bar(r, bar_data, color=self.color_list[index], width=self.bar_width,
-                   edgecolor=self.edge_color_list[index], label=legend_label_list[index], hatch=hatch_list[index])  # 创建柱子
+                   edgecolor=self.edge_color_list[index], label=legend_label_list[index],
+                   hatch=hatch_list[index])  # 创建柱子
 
         # 添加x轴名称
         plt.xticks([r + (len(bar_data_list) - 1) / 2 * self.bar_width for r in range(len(x_data))], x_data,
@@ -170,7 +172,8 @@ class Plotter(Pyplot_config):
         return {"x": val, "y": fs_rv_dist.cdf(val)}
 
     # 绘制 cdf 图
-    def plot_cdfs(self, x_label="x", y_label="cdf", legend_title="legend", legend_ncol=1, bbox_to_anchor=None, x_tick_ndigits=1, y_tick_ndigits=2,
+    def plot_cdfs(self, x_label="x", y_label="cdf", legend_title="legend", legend_ncol=1, bbox_to_anchor=None,
+                  x_tick_ndigits=1, y_tick_ndigits=2,
                   legend_loc="best", cdf_data_list=None, legend_label_list=None, is_marker=False, linewidth=2, alpha=1,
                   save_root="./", filename="demo.png", is_show=False):
         # 画布
@@ -224,10 +227,11 @@ class Plotter(Pyplot_config):
             plt.show()
         pass
 
-
     # 绘制 box 图
-    def plot_boxes(self, x: List[str]=None, box_data_list=None, legend_label_list=None, x_label="Replicas", y_label="Cost",
-                  legend_title="legend", legend_loc="best", legend_ncol=1, bbox_to_anchor=None, x_tick_ndigits=1, y_tick_ndigits=2,
+    def plot_boxes(self, x: List[str] = None, box_data_list=None, legend_label_list=None, x_label="Replicas",
+                   y_label="Cost",
+                   legend_title="legend", legend_loc="best", legend_ncol=1, bbox_to_anchor=None, x_tick_ndigits=1,
+                   y_tick_ndigits=2,
                    save_root="./", filename="demo.png", is_show=False):
 
         fig = plt.figure(figsize=self.figsize, dpi=300)
@@ -242,8 +246,8 @@ class Plotter(Pyplot_config):
         interval_xtick = interval * (len(legend_label_list) - 1) + space
         position = np.arange(1, 1 + interval_xtick * len(x), interval_xtick)
 
-        colors = ['red', 'darkblue', 'darkgreen', 'purple','gold']
-        facecolors = ['pink', 'lightblue', 'lightgreen', 'violet','yellow']
+        colors = ['red', 'darkblue', 'darkgreen', 'purple', 'gold']
+        facecolors = ['pink', 'lightblue', 'lightgreen', 'violet', 'yellow']
         boxes = []
 
         for i in range(len(legend_label_list)):
@@ -267,7 +271,6 @@ class Plotter(Pyplot_config):
         offset = interval * (len(legend_label_list) - 1) / 2
         ax.set_xticks([pos + offset for pos in position])
 
-
         ax.set_xticklabels(x, fontsize=self.label_size, rotation=0)
         ax.tick_params(axis='both', which='major', labelsize=self.label_size)
 
@@ -276,11 +279,11 @@ class Plotter(Pyplot_config):
         y_formatter = CustomFormatter(ndigits=y_tick_ndigits)
         ax.yaxis.set_major_formatter(y_formatter)
 
-
         plt.xticks(size=self.label_size)
         plt.yticks(size=self.label_size)
 
-        legend = plt.legend(boxes, legend_label_list, fontsize=self.legend_size, title=legend_title, loc=legend_loc, ncol=legend_ncol,
+        legend = plt.legend(boxes, legend_label_list, fontsize=self.legend_size, title=legend_title, loc=legend_loc,
+                            ncol=legend_ncol,
                             bbox_to_anchor=bbox_to_anchor)
         legend.get_title().set_fontsize(fontsize=self.legend_size)
         legend._legend_box.align = "left"
@@ -293,8 +296,9 @@ class Plotter(Pyplot_config):
         if is_show:
             plt.show()
 
-    def plot_error_grids(self, ms: list, ns: list, ys: list, predict_ys: list, x_label='Memory Size (MB)', y_label='Jobs', legend_label="Relative Error", save_root="./",
-        filename="plot_grid_demo", is_show=False):
+    def plot_error_grids(self, ms: list, ns: list, ys: list, predict_ys: list, x_tick_ndigits=0, y_tick_ndigits=0,
+                         x_label='Memory Size (MB)', y_label='Jobs', legend_label="Relative Error",
+                         save_root="./", filename="plot_grid_demo", is_show=False):
         # 绘制误差率的网格图
         fig = plt.figure(dpi=300, figsize=(8, 6))
         ax = plt.subplot(111)
@@ -321,6 +325,12 @@ class Plotter(Pyplot_config):
         plt.xticks(xticks, u_ms.astype(int), size=self.label_size)
         plt.yticks(yticks, u_ns.astype(int), size=self.label_size)
 
+        # 让角标变0
+        x_formatter = CustomFormatter(ndigits=x_tick_ndigits)
+        y_formatter = CustomFormatter(ndigits=y_tick_ndigits)
+        ax.xaxis.set_major_formatter(x_formatter)
+        ax.yaxis.set_major_formatter(y_formatter)
+
         plt.tight_layout()
         savepath = os.path.join(save_root, filename)
         print(f"图片保存到:{savepath}")
@@ -329,14 +339,15 @@ class Plotter(Pyplot_config):
         if is_show:
             plt.show()
 
-
-    def plot_grids(self, x_list: list, y_list: list, z_list: list, x_label="Memory Size (MB)", y_label="Jobs", legend_label="Relative Error", save_root="./",
-        filename="plot_grid_demo", is_show=False):
+    def plot_grids(self, x_list: list, y_list: list, z_list: list, x_tick_ndigits=1, y_tick_ndigits=0,
+                   x_label="Memory Size (MB)", y_label="Jobs",
+                   legend_label="Relative Error", save_root="./",
+                   filename="plot_grid_demo", is_show=False):
         # 绘制误差率的网格图
         fig = plt.figure(dpi=self.dpi, figsize=self.figsize)
         ax = plt.subplot(111)
 
-        mapping = {} # 从(memory size, image num)到误差率的映射
+        mapping = {}  # 从(memory size, image num)到误差率的映射
         for m, n, error in zip(x_list, y_list, z_list):
             mapping[(m, n)] = error
 
@@ -357,6 +368,12 @@ class Plotter(Pyplot_config):
         plt.xticks(xticks, u_ms.astype(int), size=self.label_size)
         plt.yticks(yticks, u_ns.astype(int), size=self.label_size)
 
+        # 让角标变0
+        x_formatter = CustomFormatter(ndigits=x_tick_ndigits)
+        y_formatter = CustomFormatter(ndigits=y_tick_ndigits)
+        ax.xaxis.set_major_formatter(x_formatter)
+        ax.yaxis.set_major_formatter(y_formatter)
+
         plt.tight_layout()
         savepath = os.path.join(save_root, filename)
         print(f"图片保存到:{savepath}")
@@ -365,11 +382,11 @@ class Plotter(Pyplot_config):
         if is_show:
             plt.show()
 
-
-    def plot_acc_bars(self, x_data=None, bar_data_list=None, bar_width=0.35, x_label="x", y_label="y", legend_loc="best", legend_title="legend", legend_ncol=1, bbox_to_anchor=None,
-                    legend_label_list=None, y_min=None, y_max=None,
-                  x_grid=False, y_grid=True, save_root="./", filename="plot_acc_bars_demo", is_hatch=False,
-                  is_show=False):
+    def plot_acc_bars(self, x_data=None, bar_data_list=None, bar_width=0.35, x_label="x", y_label="y",
+                      legend_loc="best", legend_title="legend", legend_ncol=1, bbox_to_anchor=None,
+                      legend_label_list=None, y_min=None, y_max=None,
+                      x_grid=False, y_grid=True, save_root="./", filename="plot_acc_bars_demo", is_hatch=False,
+                      is_show=False):
 
         fig = plt.figure(dpi=self.dpi, figsize=self.figsize)
         ax = plt.subplot(111)
@@ -381,7 +398,8 @@ class Plotter(Pyplot_config):
         bottom = [0 for i in range(len(bar_data_list[0]))]
         for index, bar_data in enumerate(bar_data_list):
 
-            ax.bar(ind, bar_data_list[index], bar_width, label=legend_label_list[index], color=self.color_list[index], edgecolor=self.edge_color_list[index], bottom=bottom)
+            ax.bar(ind, bar_data_list[index], bar_width, label=legend_label_list[index], color=self.color_list[index],
+                   edgecolor=self.edge_color_list[index], bottom=bottom)
 
             # 更新 bottom
             for i in range(len(bottom)):
@@ -423,8 +441,6 @@ class Plotter(Pyplot_config):
             plt.show()
 
 
-
-
 if __name__ == "__main__":
     my_plotter = Plotter(figsize=(8, 6))
 
@@ -436,8 +452,8 @@ if __name__ == "__main__":
 
     my_plotter.plot_lines(
         x_list=[[i for i in range(len(y1))] for i in range(5)],
-        y_list=[y1,y2,y3,y4,y5],
-        legend_label_list=["y1","y2","y3","y4","y5"],
+        y_list=[y1, y2, y3, y4, y5],
+        legend_label_list=["y1", "y2", "y3", "y4", "y5"],
         x_label="X",
         y_label="Y",
         x_grid=True,
@@ -452,7 +468,7 @@ if __name__ == "__main__":
     )
 
     my_plotter.plot_cdfs(
-        cdf_data_list=[y1,y2,y3,y4,y5],
+        cdf_data_list=[y1, y2, y3, y4, y5],
         legend_label_list=["y1", "y2", "y3", "y4", "y5"],
         legend_loc="best",
         legend_title="Legend",
@@ -471,14 +487,14 @@ if __name__ == "__main__":
     )
 
     my_plotter.plot_bars(
-        x_data=["0","1.0","2","3.5"],
+        x_data=["0", "1.0", "2", "3.5"],
         bar_data_list=[
-            [1,2,3,4],
-            [2,3,4,5],
-            [3,4,5,6],
-            [7,8,9,10]
+            [1, 2, 3, 4],
+            [2, 3, 4, 5],
+            [3, 4, 5, 6],
+            [7, 8, 9, 10]
         ],
-        legend_label_list=["1","2","3","4"],
+        legend_label_list=["1", "2", "3", "4"],
         x_label="X",
         y_label="Y",
         save_root="./results",
@@ -486,10 +502,10 @@ if __name__ == "__main__":
     )
 
     my_plotter.plot_error_grids(
-        ms=[1,1,1,2,2,3,3,3,3],
-        ns=[4,5,6,4,5,6,4,5,6],
-        ys=[1,1,1,1,1,1,1,1,1],
-        predict_ys=[1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,1.9],
+        ms=[1, 1, 1, 2, 2, 3, 3, 3, 3],
+        ns=[4, 5, 6, 4, 5, 6, 4, 5, 6],
+        ys=[1, 1, 1, 1, 1, 1, 1, 1, 1],
+        predict_ys=[1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9],
         x_label="X",
         y_label="Y",
         legend_label="Error",
@@ -500,7 +516,7 @@ if __name__ == "__main__":
     my_plotter.plot_grids(
         x_list=[1, 1, 1, 2, 2, 3, 3, 3, 3],
         y_list=[4, 5, 6, 4, 5, 6, 4, 5, 6],
-        z_list=[1.1,2.2,1.3,1.4,4.5,1.6,1.7,1.8,4.9],
+        z_list=[1.1, 2.2, 1.3, 1.4, 4.5, 1.6, 1.7, 1.8, 4.9],
         x_label="X",
         y_label="Y",
         legend_label="Error",
@@ -524,4 +540,3 @@ if __name__ == "__main__":
         y_min=0,
         y_max=40,
     )
-
