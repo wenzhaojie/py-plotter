@@ -17,6 +17,7 @@ class Pyplot_config:
         self.marker_list = ['o', '.', '*', '+', 'v']
         self.edge_color_list = ['black', 'black', 'black', 'black', 'black', 'black', 'black', 'black']
         self.label_size = int(fontsize * 0.8)
+        self.data_size = int(fontsize * 0.5)
         self.tick_size = int(fontsize * 0.8)
         self.title_size = fontsize
         self.legend_size = int(fontsize * 0.8)
@@ -33,7 +34,7 @@ class Plotter(Pyplot_config):
         pass
 
     # 用于画折线图, 有几条线就画几个
-    def plot_lines(self, x_list=None, y_list=None, legend_label_list=None, x_label="x", y_label="y", title=None,
+    def plot_lines(self, x_list=None, y_list=None, data_label_list=None, legend_label_list=None, x_label="x", y_label="y", title=None,
                    x_grid=False, y_grid=True, y_min=None, y_max=None, x_tick_ndigits=1, y_tick_ndigits=2,
                    save_root="./", filename="demo.png", is_show=False,
                    legend_loc="best", legend_title="legend"):
@@ -72,6 +73,15 @@ class Plotter(Pyplot_config):
         # 调整 tick 的字体大小
         plt.xticks(fontsize=self.tick_size)
         plt.yticks(fontsize=self.tick_size)
+
+        # 分别在每一条线上的数据点上显示对应数据标签
+        if data_label_list != None:
+            for index, y in enumerate(y_list):
+                data_label = data_label_list[index]
+                i = 0
+                for x, y in zip(x_list[index], y_list[index]):
+                    plt.text(x, y, data_label[i], fontsize=self.data_size)
+                    i += 1
 
         # 网格线
         if x_grid and y_grid:
@@ -231,7 +241,7 @@ class Plotter(Pyplot_config):
     def plot_boxes(self, x: List[str] = None, box_data_list=None, legend_label_list=None, x_label="Replicas",
                    y_label="Cost",
                    legend_title="legend", legend_loc="best", legend_ncol=1, bbox_to_anchor=None, x_tick_ndigits=1,
-                   y_tick_ndigits=2,
+                   y_tick_ndigits=2, is_data_label=False,
                    save_root="./", filename="demo.png", is_show=False):
 
         fig = plt.figure(figsize=self.figsize, dpi=300)
@@ -287,6 +297,14 @@ class Plotter(Pyplot_config):
                             bbox_to_anchor=bbox_to_anchor)
         legend.get_title().set_fontsize(fontsize=self.legend_size)
         legend._legend_box.align = "left"
+
+        # 在图上显示box的平均值
+        if is_data_label:
+            for i in range(len(legend_label_list)):
+                box_data = box_data_list[i]
+                for j in range(len(x)):
+                    mean = np.mean(box_data[j])
+                    ax.text(position[j] + interval * i, mean, '%.1f' % mean, ha='center', va='bottom', fontsize=self.data_size)
 
         plt.tight_layout()
         savepath = os.path.join(save_root, filename)

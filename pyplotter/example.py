@@ -12,13 +12,14 @@ if __name__ == "__main__":
 
     my_plotter.plot_lines(
         x_list=[[i for i in range(len(y1))] for i in range(5)],
-        y_list=[y1, y2, y3, y4, y5],
-        legend_label_list=["y1", "y2", "y3", "y4", "y5"],
+        y_list=[y1, y2],
+        legend_label_list=["y1", "y2"],
+        data_label_list=[["1","2","3","4","5","6","7","8","9","10"],["a","b","c","d","e","f","g","h","i","j"]],
         x_label="X",
         y_label="Y",
         x_grid=True,
         y_grid=True,
-        y_min=0,
+        y_min=-10,
         y_max=10,
         legend_loc="best",
         legend_title="Legend",
@@ -42,6 +43,7 @@ if __name__ == "__main__":
         legend_label_list=["1234", "2345", "3451", "4512"],
         x_label="x",
         y_label="y",
+        is_data_label=True,
         save_root="./results",
         filename="plot_boxes_demo"
     )
