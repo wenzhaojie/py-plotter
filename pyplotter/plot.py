@@ -108,12 +108,11 @@ class Plotter(Pyplot_config):
             plt.show()
 
     # 绘制条形图
-    def plot_bars(self, x_label="x", y_label="y", legend_title="legend", legend_ncol=1, bbox_to_anchor=None,
-                  x_tick_ndigits=1, y_tick_ndigits=2,
+    def plot_bars(self, x_label="x", y_label="y", legend_title="legend", legend_ncol=1, bbox_to_anchor=None, y_tick_ndigits=2,
                   legend_loc="best", x_data=None, bar_data_list=None, legend_label_list=None, y_min=None, y_max=None,
                   x_grid=False, y_grid=True, save_root="./", filename="demo.png", is_hatch=False,
                   is_show=False):
-        fig = plt.figure(figsize=self.figsize, dpi=self.dpi)
+        plt.figure(figsize=self.figsize, dpi=self.dpi)
         ax = plt.subplot(111)
         # 设置轴的标签字体和大小
         ax.set_xlabel(x_label, fontdict={'size': self.label_size})
