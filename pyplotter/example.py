@@ -12,7 +12,7 @@ if __name__ == "__main__":
 
     my_plotter.plot_lines(
         x_list=[[i for i in range(len(y1))] for i in range(5)],
-        y_list=[y1, y2],
+        line_data_list=[y1, y2],
         legend_label_list=["y1", "y2"],
         data_label_list=[["1","2","3","4","5","6","7","8","9","10"],["a","b","c","d","e","f","g","h","i","j"]],
         x_label="X",

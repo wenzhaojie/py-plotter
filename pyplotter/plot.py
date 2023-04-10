@@ -34,7 +34,7 @@ class Plotter(Pyplot_config):
         pass
 
     # 用于画折线图, 有几条线就画几个
-    def plot_lines(self, x_list=None, y_list=None, data_label_list=None, legend_label_list=None, x_label="x", y_label="y", title=None,
+    def plot_lines(self, x_list=None, line_data_list=None, data_label_list=None, legend_label_list=None, x_label="x", y_label="y", title=None,
                    x_grid=False, y_grid=True, y_min=None, y_max=None, x_tick_ndigits=1, y_tick_ndigits=2,
                    save_root="./", filename="demo.png", is_show=False,
                    legend_loc="best", legend_title="legend"):
@@ -42,15 +42,15 @@ class Plotter(Pyplot_config):
         os.makedirs(save_root, exist_ok=True)
         # 如果没有指定x的值，就用正整数列进行生成
         if x_list == None:
-            x_list = [[i for i in range(len(y_list[0]))] for i in range(len(y_list))]
+            x_list = [[i for i in range(len(line_data_list[0]))] for i in range(len(line_data_list))]
         fig = plt.figure(figsize=self.figsize, dpi=self.dpi)
 
         if legend_label_list != None:
-            for index, y in enumerate(y_list):
+            for index, y in enumerate(line_data_list):
                 plt.plot(x_list[index], y, color=self.color_list[index], linestyle=self.linestyle_list[index],
                          label=legend_label_list[index])
         else:
-            for index, y in enumerate(y_list):
+            for index, y in enumerate(line_data_list):
                 plt.plot(x_list[index], y, color=self.color_list[index], linestyle=self.linestyle_list[index])
 
         plt.xlabel(x_label, fontsize=self.label_size)
@@ -76,10 +76,10 @@ class Plotter(Pyplot_config):
 
         # 分别在每一条线上的数据点上显示对应数据标签
         if data_label_list != None:
-            for index, y in enumerate(y_list):
+            for index, y in enumerate(line_data_list):
                 data_label = data_label_list[index]
                 i = 0
-                for x, y in zip(x_list[index], y_list[index]):
+                for x, y in zip(x_list[index], line_data_list[index]):
                     plt.text(x, y, data_label[i], fontsize=self.data_size)
                     i += 1
 
