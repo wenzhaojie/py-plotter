@@ -2,7 +2,7 @@
 from matplotlib import pyplot as plt
 import os
 import numpy as np
-from matplotlib.ticker import FuncFormatter, LinearLocator
+
 from scipy import stats
 from typing import List
 from pyplotter.tick_formatter import CustomFormatter
