@@ -2,7 +2,7 @@
 from matplotlib import pyplot as plt
 import os
 import numpy as np
-from matplotlib.ticker import FuncFormatter
+from matplotlib.ticker import FuncFormatter, LinearLocator
 from scipy import stats
 from typing import List
 from pyplotter.tick_formatter import CustomFormatter
@@ -186,7 +186,7 @@ class Plotter(Pyplot_config):
 
     # 绘制 cdf 图
     def plot_cdfs(self, x_label="x", y_label="cdf", legend_title="legend", legend_ncol=1, bbox_to_anchor=None,
-                  x_tick_ndigits=1, y_tick_ndigits=2,
+                  x_tick_ndigits=1, y_tick_ndigits=1, num_x_ticks=5, num_y_ticks=5,
                   legend_loc="best", cdf_data_list=None, legend_label_list=None, is_marker=False, linewidth=2, alpha=1,
                   save_root="./", filename="demo.png", is_show=False):
         # 画布
@@ -228,9 +228,12 @@ class Plotter(Pyplot_config):
                 label=cdf_label,
             )
 
-        # 设置 y 轴刻度范围
-        y_ticks = np.arange(0, 1.1, 0.1)  # 从 0 到 1（包含 1），以 0.1 为间隔的刻度
-        ax.set_yticks(y_ticks)
+        # 设置x轴的刻度
+        if num_x_ticks != None:
+            ax.xaxis.set_major_locator(MaxNLocator(integer=False, prune="both", nbins=num_x_ticks))
+        # 设置y轴的刻度
+        if num_y_ticks != None:
+            ax.yaxis.set_major_locator(MaxNLocator(integer=False, prune="both", nbins=num_y_ticks))
 
         # 创建图例
         legend = plt.legend(fontsize=self.legend_size, title=legend_title, loc=legend_loc, ncol=legend_ncol,
