@@ -6,7 +6,7 @@ from matplotlib.ticker import FuncFormatter
 from scipy import stats
 from typing import List
 from pyplotter.tick_formatter import CustomFormatter
-
+from matplotlib.ticker import MaxNLocator
 
 class Pyplot_config:
     def __init__(self, figsize=(20, 6), fontsize=30):
@@ -136,6 +136,9 @@ class Plotter(Pyplot_config):
         plt.xticks([r + (len(bar_data_list) - 1) / 2 * self.bar_width for r in range(len(x_data))], x_data,
                    size=self.label_size)
         plt.yticks(size=self.label_size)
+
+        # 在设置主要刻度的格式化程序之前，使用MaxNLocator来自动计算x轴的刻度间隔
+        ax.xaxis.set_major_locator(MaxNLocator(integer=False, prune="both"))
 
         # 让角标变0
         ax = plt.gca()
