@@ -139,6 +139,7 @@ class Plotter(Pyplot_config):
 
         # 在设置主要刻度的格式化程序之前，使用MaxNLocator来自动计算x轴的刻度间隔
         ax.xaxis.set_major_locator(MaxNLocator(integer=False, prune="both"))
+        ax.yaxis.set_major_locator(MaxNLocator(integer=False, prune="both"))
 
         # 让角标变0
         ax = plt.gca()
