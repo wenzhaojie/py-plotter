@@ -11,7 +11,7 @@ class CustomFormatter(ticker.Formatter):
         if x == 0:
             return str(int(x))
         else:
-            return '{:.{}f}'.format(x, self.ndigits)
+            return round(x, self.ndigits)
 
 
 if __name__ == '__main__':

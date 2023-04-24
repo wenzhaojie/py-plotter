@@ -227,9 +227,10 @@ class Plotter(Pyplot_config):
                 alpha=alpha,
                 label=cdf_label,
             )
-        # 修改ticks
-        ax.xaxis.set_major_locator(MaxNLocator(integer=False, prune="both"))
-        ax.yaxis.set_major_locator(MaxNLocator(integer=False, prune="both"))
+
+        # 设置 y 轴刻度范围
+        y_ticks = np.arange(0, 1.1, 0.1)  # 从 0 到 1（包含 1），以 0.1 为间隔的刻度
+        ax.set_yticks(y_ticks)
 
         # 创建图例
         legend = plt.legend(fontsize=self.legend_size, title=legend_title, loc=legend_loc, ncol=legend_ncol,
