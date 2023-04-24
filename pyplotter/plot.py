@@ -202,6 +202,8 @@ class Plotter(Pyplot_config):
         # 让角标变0
         x_formatter = CustomFormatter(ndigits=x_tick_ndigits)
         y_formatter = CustomFormatter(ndigits=y_tick_ndigits)
+
+
         ax.xaxis.set_major_formatter(x_formatter)
         ax.yaxis.set_major_formatter(y_formatter)
 
@@ -225,6 +227,10 @@ class Plotter(Pyplot_config):
                 alpha=alpha,
                 label=cdf_label,
             )
+        # 修改ticks
+        ax.xaxis.set_major_locator(MaxNLocator(integer=False, prune="both"))
+        ax.yaxis.set_major_locator(MaxNLocator(integer=False, prune="both"))
+
         # 创建图例
         legend = plt.legend(fontsize=self.legend_size, title=legend_title, loc=legend_loc, ncol=legend_ncol,
                             bbox_to_anchor=bbox_to_anchor)
