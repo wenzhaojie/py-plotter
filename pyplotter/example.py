@@ -21,6 +21,7 @@ if __name__ == "__main__":
         y_grid=True,
         y_min=-10,
         y_max=10,
+        is_marker=True,
         legend_loc="best",
         legend_title="Legend",
         title="This is a demo!",

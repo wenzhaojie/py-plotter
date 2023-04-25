@@ -14,7 +14,7 @@ class Pyplot_config:
         self.hatch_list = [None, '...', 'x', '***', '|', '-', '/', '+', 'O', 'o', 'XXX', '.', '*']
         self.linestyle_list = [None, '--', '-.', ':', '-', '-', '-', '-']
         self.dash_list = [(2, 5), (4, 10), (3, 3, 2, 2), (5, 2, 20, 2), (5, 2), (1, 1, 5, 4), (5, 8), (2, 4, 5)]
-        self.marker_list = ['o', '.', '*', '+', 'v']
+        self.marker_list = ['*','.','v','+','o']
         self.edge_color_list = ['black', 'black', 'black', 'black', 'black', 'black', 'black', 'black']
         self.label_size = int(fontsize * 0.8)
         self.data_size = int(fontsize * 0.5)
@@ -35,8 +35,8 @@ class Plotter(Pyplot_config):
 
     # 用于画折线图, 有几条线就画几个
     def plot_lines(self, x_list=None, line_data_list=None, data_label_list=None, legend_label_list=None, x_label="x", y_label="y", title=None,
-                   x_grid=False, y_grid=True, y_min=None, y_max=None, x_tick_ndigits=1, y_tick_ndigits=2,
-                   save_root="./", filename="demo.png", is_show=False,
+                   x_grid=False, y_grid=True, y_min=None, y_max=None, x_tick_ndigits=1, y_tick_ndigits=2, is_marker=False,
+                   save_root="./", filename="demo.png", is_show=False, legend_ncol=1, bbox_to_anchor=None,
                    legend_loc="best", legend_title="legend"):
         # 如果 save_root 没有创建，则创建一个
         os.makedirs(save_root, exist_ok=True)
@@ -47,11 +47,19 @@ class Plotter(Pyplot_config):
 
         if legend_label_list != None:
             for index, y in enumerate(line_data_list):
-                plt.plot(x_list[index], y, color=self.color_list[index], linestyle=self.linestyle_list[index],
-                         label=legend_label_list[index])
+                if is_marker:
+                    plt.plot(x_list[index], y, color=self.color_list[index], linestyle=self.linestyle_list[index],
+                             label=legend_label_list[index], marker=self.marker_list[index])
+                else:
+                    plt.plot(x_list[index], y, color=self.color_list[index], linestyle=self.linestyle_list[index],
+                             label=legend_label_list[index])
         else:
             for index, y in enumerate(line_data_list):
-                plt.plot(x_list[index], y, color=self.color_list[index], linestyle=self.linestyle_list[index])
+                if is_marker:
+                    plt.plot(x_list[index], y, color=self.color_list[index], linestyle=self.linestyle_list[index],
+                             marker=self.marker_list[index])
+                else:
+                    plt.plot(x_list[index], y, color=self.color_list[index], linestyle=self.linestyle_list[index])
 
         plt.xlabel(x_label, fontsize=self.label_size)
         plt.ylabel(y_label, fontsize=self.label_size)
@@ -60,8 +68,11 @@ class Plotter(Pyplot_config):
             plt.title(title, fontdict={'size': self.title_size})
         # 判断是否绘制legend
         if legend_label_list != None:
-            plt.legend(fontsize=self.legend_size, loc=legend_loc, title=legend_title,
-                       title_fontsize=self.legend_size)  # 将样例显示出来
+            # 创建图例
+            legend = plt.legend(fontsize=self.legend_size, title=legend_title, loc=legend_loc, ncol=legend_ncol,
+                                bbox_to_anchor=bbox_to_anchor)
+            legend.get_title().set_fontsize(fontsize=self.legend_size)
+            legend._legend_box.align = "left"
 
         # 让角标变0
         ax = plt.gca()
@@ -136,10 +147,6 @@ class Plotter(Pyplot_config):
         plt.xticks([r + (len(bar_data_list) - 1) / 2 * self.bar_width for r in range(len(x_data))], x_data,
                    size=self.label_size)
         plt.yticks(size=self.label_size)
-
-        # 在设置主要刻度的格式化程序之前，使用MaxNLocator来自动计算x轴的刻度间隔
-        ax.xaxis.set_major_locator(MaxNLocator(integer=False, prune="both"))
-        ax.yaxis.set_major_locator(MaxNLocator(integer=False, prune="both"))
 
         # 让角标变0
         ax = plt.gca()

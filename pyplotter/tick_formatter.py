@@ -11,8 +11,12 @@ class CustomFormatter(ticker.Formatter):
         if x == 0:
             return str(int(x))
         else:
-            return round(x, self.ndigits)
+            # 保留ndigits位小数
+            res = "{:.{}f}".format(x, self.ndigits)
+            return res
+
 
 
 if __name__ == '__main__':
     my_formatter = CustomFormatter(ndigits=2)
+
