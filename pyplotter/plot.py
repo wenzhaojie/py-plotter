@@ -7,6 +7,7 @@ from scipy import stats
 from typing import List
 from pyplotter.tick_formatter import CustomFormatter
 from matplotlib.ticker import MaxNLocator
+import matplotlib.patches as mpatches
 
 class Pyplot_config:
     def __init__(self, figsize=(20, 6), fontsize=30):
@@ -474,6 +475,95 @@ class Plotter(Pyplot_config):
         savepath = os.path.join(save_root, filename)
         print(f"图片保存到:{savepath}")
         plt.savefig(savepath)
+        # 展示图片
+        if is_show:
+            plt.show()
+
+    # 在Plotter类中添加以下方法
+    def plot_violin(self, data: List[np.ndarray], x_labels: List[str], y_label: str,
+                    legend_label_list: List[str] = None,
+                    title: str = None, save_root: str = "./", filename: str = "violin_demo.png",
+                    is_show: bool = False):
+        # 如果 save_root 没有创建，则创建一个
+        os.makedirs(save_root, exist_ok=True)
+        fig = plt.figure(figsize=self.figsize, dpi=self.dpi)
+
+        # 创建violinplot
+        parts = plt.violinplot(data, showmeans=True, showextrema=True, showmedians=True)
+
+        # 设置violinplot的颜色和样式
+        for i, (pc, color) in enumerate(zip(parts['bodies'], self.color_list)):
+            pc.set_facecolor(color)
+            pc.set_edgecolor(self.edge_color_list[i])
+            pc.set_alpha(0.8)
+
+        # 设置坐标轴和标题
+        plt.xticks(np.arange(1, len(x_labels) + 1), x_labels, fontsize=self.tick_size)
+        plt.xlabel("Categories", fontsize=self.label_size)
+        plt.ylabel(y_label, fontsize=self.label_size)
+
+        if title != None:
+            plt.title(title, fontdict={'size': self.title_size})
+
+        # 调整 tick 的字体大小
+        plt.yticks(fontsize=self.tick_size)
+
+        # 添加图例
+        if legend_label_list is not None:
+            legend_patches = [mpatches.Patch(color=color, label=label) for color, label in
+                              zip(self.color_list, legend_label_list)]
+            plt.legend(handles=legend_patches, fontsize=self.legend_size, loc='best')
+
+        plt.tight_layout()
+        savepath = os.path.join(save_root, filename)
+        print(f"图片保存到:{savepath}")
+        plt.savefig(savepath)
+
+        # 展示图片
+        if is_show:
+            plt.show()
+
+    def plot_violin_twin(self, data: List[tuple], x_labels: List[str], y_label: str, legend_label_list: List[str] = None,
+                    title: str = None, save_root: str = "./", filename: str = "violin_twin_demo.png", is_show: bool = False):
+        # 如果 save_root 没有创建，则创建一个
+        os.makedirs(save_root, exist_ok=True)
+        fig = plt.figure(figsize=self.figsize, dpi=self.dpi)
+
+        for i, group_tuple in enumerate(data):
+            for j, group_data in enumerate(group_tuple):
+                # 计算核密度估计值
+                kde = stats.gaussian_kde(group_data)
+                positions = np.linspace(min(group_data), max(group_data), 100)
+                density = kde(positions)
+
+                # 判断是左半边还是右半边
+                side = -1 if j % 2 == 0 else 1
+
+                # 绘制violin半边
+                plt.fill_betweenx(positions, i + 1 + side * density / 2, i + 1 - side * density / 2,
+                                  color=self.color_list[j], alpha=0.8)
+
+        # 设置坐标轴和标题
+        plt.xticks(np.arange(1, len(x_labels) + 1), x_labels, fontsize=self.tick_size)
+        plt.xlabel("Categories", fontsize=self.label_size)
+        plt.ylabel(y_label, fontsize=self.label_size)
+
+        if title != None:
+            plt.title(title, fontdict={'size': self.title_size})
+
+        # 调整 tick 的字体大小
+        plt.yticks(fontsize=self.tick_size)
+
+        # 添加图例
+        if legend_label_list is not None:
+            legend_patches = [mpatches.Patch(color=color, label=label) for color, label in zip(self.color_list, legend_label_list)]
+            plt.legend(handles=legend_patches, fontsize=self.legend_size, loc='best')
+
+        plt.tight_layout()
+        savepath = os.path.join(save_root, filename)
+        print(f"图片保存到:{savepath}")
+        plt.savefig(savepath)
+
         # 展示图片
         if is_show:
             plt.show()
