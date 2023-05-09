@@ -3,7 +3,7 @@ import numpy as np
 
 def test_violin():
     # 创建一个Plotter实例
-    plotter = Plotter()
+    plotter = Plotter(figsize=(8, 6))
 
     # 准备数据
     data = [np.random.normal(0, 1, 100), np.random.normal(1, 2, 100), np.random.normal(2, 1, 100)]
@@ -12,23 +12,23 @@ def test_violin():
     legend_label_list = ['Group 1', 'Group 2', 'Group 3']
 
     # 绘制violin图，添加图例
-    plotter.plot_violin(data, x_labels, y_label, legend_label_list, title='Violin Plot with Legend Demo', is_show=True)
+    plotter.plot_violin(data, x_labels, y_label, legend_label_list, title='Violin Plot with Legend Demo', is_show=True, save_root="./results")
 
 
 def test_violin_twin():
     # 创建一个Plotter实例
-    plotter = Plotter()
+    plotter = Plotter(figsize=(8, 6))
 
     # 准备数据
     data = [(np.random.normal(0, 1, 100), np.random.normal(1, 2, 100)), (np.random.normal(2, 1, 100),
             np.random.normal(3, 1, 100))]
     x_labels = ['Category 1', 'Category 2']
     y_label = 'Value'
-    legend_label_list = ['Group 1', 'Group 2', 'Group 3', 'Group 4']
+    legend_label_list = ['Group 1', 'Group 2']
 
     # 绘制半边violin图，添加图例
     plotter.plot_violin_twin(data, x_labels, y_label, legend_label_list, title='Half Violin Plot with Legend Demo',
-                        is_show=True)
+                        is_show=True, save_root="./results")
 
 if __name__ == "__main__":
     test_violin()
