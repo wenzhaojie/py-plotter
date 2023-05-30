@@ -124,6 +124,7 @@ class Plotter(Pyplot_config):
                   legend_loc="best", x_data=None, bar_data_list=None, legend_label_list=None, y_min=None, y_max=None,
                   x_grid=False, y_grid=True, save_root="./", filename="demo.png", is_hatch=False,
                   is_show=False):
+
         plt.figure(figsize=self.figsize, dpi=self.dpi)
         ax = plt.subplot(111)
         # 设置轴的标签字体和大小
@@ -147,6 +148,75 @@ class Plotter(Pyplot_config):
         # 添加x轴名称
         plt.xticks([r + (len(bar_data_list) - 1) / 2 * self.bar_width for r in range(len(x_data))], x_data,
                    size=self.label_size)
+        plt.yticks(size=self.label_size)
+
+        # 让角标变0
+        ax = plt.gca()
+        y_formatter = CustomFormatter(ndigits=y_tick_ndigits)
+        ax.yaxis.set_major_formatter(y_formatter)
+
+        # 创建图例
+        legend = plt.legend(fontsize=self.legend_size, title=legend_title, loc=legend_loc, ncol=legend_ncol,
+                            bbox_to_anchor=bbox_to_anchor)
+        legend.get_title().set_fontsize(fontsize=self.legend_size)
+        legend._legend_box.align = "left"
+
+        # 网格线
+        if x_grid and y_grid:
+            cmd = "both"
+            plt.grid(axis=cmd)
+        else:
+            if x_grid:
+                cmd = "x"
+                plt.grid(axis=cmd)
+            if y_grid:
+                cmd = "y"
+                plt.grid(axis=cmd)
+
+        # 设置ylim
+        if y_min != None and y_max != None:
+            plt.ylim(y_min, y_max)
+        plt.tight_layout()
+
+        savepath = os.path.join(save_root, filename)
+        print(f"图片保存到:{savepath}")
+        plt.savefig(savepath)
+        # 展示图片
+        if is_show:
+            plt.show()
+        pass
+
+    def plot_stack_bars(self, x_label="x", y_label="y", legend_title="legend", legend_ncol=1, bbox_to_anchor=None, y_tick_ndigits=2,
+                  legend_loc="best", x_data=None, bar_data_list=None, legend_label_list=None, y_min=None, y_max=None,
+                  x_grid=False, y_grid=True, save_root="./", filename="demo.png", is_hatch=False,
+                  is_show=False):
+
+        plt.figure(figsize=self.figsize, dpi=self.dpi)
+        ax = plt.subplot(111)
+        # 设置轴的标签字体和大小
+        ax.set_xlabel(x_label, fontdict={'size': self.label_size})
+        ax.set_ylabel(y_label, fontdict={'size': self.label_size})
+
+        # 分别画柱子
+        r_base = np.arange(len(x_data))
+        # 是否用阴影hatch区别
+        if is_hatch:
+            hatch_list = self.hatch_list
+        else:
+            hatch_list = [None for i in range(10)]
+
+        bottom = np.zeros(len(x_data))
+
+        for index, (bar_label, bar_data) in enumerate(zip(legend_label_list, bar_data_list)):
+
+            ax.bar(r_base, bar_data, bottom=bottom, color=self.color_list[index], width=self.bar_width,
+                   edgecolor=self.edge_color_list[index], label=legend_label_list[index],
+                   hatch=hatch_list[index])  # 创建柱子
+
+            bottom += np.array(bar_data)
+
+        # 添加x轴名称
+        plt.xticks(size=self.label_size)
         plt.yticks(size=self.label_size)
 
         # 让角标变0
