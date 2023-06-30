@@ -54,13 +54,13 @@ if __name__ == "__main__":
     test_stack_bars()
 
 
-    # my_plotter = Plotter(figsize=(8, 6))
-    #
-    # y1 = [1, 2, 3, 2, 1, 2, 3, 2, 1, 2]
-    # y2 = [-1, 0, 1, 0, -1, -1, 0, 1, 0, -1]
-    # y3 = [1, 2, 3, 4, 2, 4, 6, 1, 5, 1]
-    # y4 = [1, 6, 3, 8, 6, 4, 3, 1, 3, 0]
-    # y5 = [0, 2, 3, 4, 2, 1, 6, 8, 5, 1]
+    my_plotter = Plotter(figsize=(8, 6))
+
+    y1 = [1, 2, 3, 2, 1, 2, 3, 2, 1, 2]
+    y2 = [-1, 0, 1, 0, -1, -1, 0, 1, 0, -1]
+    y3 = [1, 2, 3, 4, 2, 4, 6, 1, 5, 1]
+    y4 = [1, 6, 3, 8, 6, 4, 3, 1, 3, 0]
+    y5 = [0, 2, 3, 4, 2, 1, 6, 8, 5, 1]
     #
     # my_plotter.plot_lines(
     #     x_list=[[i for i in range(len(y1))] for i in range(5)],
@@ -90,16 +90,16 @@ if __name__ == "__main__":
     #     filename="plot_cdfs_demo"
     # )
     #
-    # my_plotter.plot_boxes(
-    #     x=["2.0", "1.0", "3",],
-    #     box_data_list=[[y1, y2, y3], [y2, y3, y5], [y4, y5, y1], [y4, y1, y2]],
-    #     legend_label_list=["1234", "2345", "3451", "4512"],
-    #     x_label="x",
-    #     y_label="y",
-    #     is_data_label=True,
-    #     save_root="./results",
-    #     filename="plot_boxes_demo"
-    # )
+    my_plotter.plot_boxes(
+        x=["2.0", "1.0", "3",],
+        box_data_list=[[y1, y2, y3], [y2, y3, y5], [y4, y5, y1], [y4, y1, y2]],
+        legend_label_list=["1234", "2345", "3451", "4512"],
+        x_label="x",
+        y_label="y",
+        is_data_label=True,
+        save_root="./results",
+        filename="plot_boxes_demo"
+    )
     #
     # my_plotter.plot_bars(
     #     x_data=["0", "1.0", "2", "3.5"],

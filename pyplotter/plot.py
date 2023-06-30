@@ -216,7 +216,8 @@ class Plotter(Pyplot_config):
             bottom += np.array(bar_data)
 
         # 添加x轴名称
-        plt.xticks(size=self.label_size)
+        plt.xticks([r for r in range(len(x_data))], x_data,
+                   size=self.label_size)
         plt.yticks(size=self.label_size)
 
         # 让角标变0
@@ -330,7 +331,7 @@ class Plotter(Pyplot_config):
 
     # 绘制 box 图
     def plot_boxes(self, x: List[str] = None, box_data_list=None, legend_label_list=None, x_label="Replicas",
-                   y_label="Cost",
+                   y_label="Cost", y_min=None, y_max=None,
                    legend_title="legend", legend_loc="best", legend_ncol=1, bbox_to_anchor=None, x_tick_ndigits=1,
                    y_tick_ndigits=2, is_data_label=False,
                    save_root="./", filename="demo.png", is_show=False):
@@ -396,6 +397,10 @@ class Plotter(Pyplot_config):
                 for j in range(len(x)):
                     mean = np.mean(box_data[j])
                     ax.text(position[j] + interval * i, mean, '%.1f' % mean, ha='center', va='bottom', fontsize=self.data_size)
+
+        # 设置ylim
+        if y_min != None and y_max != None:
+            plt.ylim(y_min, y_max)
 
         plt.tight_layout()
         savepath = os.path.join(save_root, filename)
