@@ -17,9 +17,9 @@ class Pyplot_config:
         self.dash_list = [(2, 5), (4, 10), (3, 3, 2, 2), (5, 2, 20, 2), (5, 2), (1, 1, 5, 4), (5, 8), (2, 4, 5)]
         self.marker_list = ['*','.','v','+','o']
         self.edge_color_list = ['black', 'black', 'black', 'black', 'black', 'black', 'black', 'black']
-        self.label_size = int(fontsize * 0.8)
+        self.label_size = int(fontsize * 1)
         self.data_size = int(fontsize * 0.5)
-        self.tick_size = int(fontsize * 0.8)
+        self.tick_size = int(fontsize * 1)
         self.title_size = fontsize
         self.legend_size = int(fontsize * 0.8)
         self.legend_title_fontsize = int(fontsize * 0.8)
