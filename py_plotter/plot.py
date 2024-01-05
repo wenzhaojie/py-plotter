@@ -5,7 +5,7 @@ import numpy as np
 
 from scipy import stats
 from typing import List
-from pyplotter.tick_formatter import CustomFormatter
+from py_plotter.tick_formatter import CustomFormatter
 from matplotlib.ticker import MaxNLocator
 import matplotlib.patches as mpatches
 
