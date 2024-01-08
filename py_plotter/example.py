@@ -44,7 +44,7 @@ def test_stack_bars():
                       y_tick_ndigits=2,
                       legend_loc="best", x_data=x_data, bar_data_list=bar_data_list,
                       legend_label_list=legend_label_list, y_min=None, y_max=None,
-                      x_grid=False, y_grid=True, save_root="./results", filename="plot_stack_bars.png", is_show=True)
+                      x_grid=False, y_grid=True, save_root="./results", filename="plot_stack_bars", is_show=True)
 
 
 
@@ -80,16 +80,16 @@ if __name__ == "__main__":
         save_root="./results",
         filename="plot_lines_demo"
     )
-    #
-    # my_plotter.plot_cdfs(
-    #     cdf_data_list=[y1, y2, y3, y4, y5],
-    #     legend_label_list=["y1", "y2", "y3", "y4", "y5"],
-    #     legend_loc="best",
-    #     legend_title="Legend",
-    #     save_root="./results",
-    #     filename="plot_cdfs_demo"
-    # )
-    #
+
+    my_plotter.plot_cdfs(
+        cdf_data_list=[y1, y2, y3, y4, y5],
+        legend_label_list=["y1", "y2", "y3", "y4", "y5"],
+        legend_loc="best",
+        legend_title="Legend",
+        save_root="./results",
+        filename="plot_cdfs_demo"
+    )
+
     my_plotter.plot_boxes(
         x=["2.0", "1.0", "3",],
         box_data_list=[[y1, y2, y3], [y2, y3, y5], [y4, y5, y1], [y4, y1, y2]],
@@ -100,57 +100,57 @@ if __name__ == "__main__":
         save_root="./results",
         filename="plot_boxes_demo"
     )
-    #
-    # my_plotter.plot_bars(
-    #     x_data=["0", "1.0", "2", "3.5"],
-    #     bar_data_list=[
-    #         [1, 2, 3, 4],
-    #         [2, 3, 4, 5],
-    #         [3, 4, 5, 6],
-    #         [7, 8, 9, 10]
-    #     ],
-    #     legend_label_list=["1", "2", "3", "4"],
-    #     x_label="X",
-    #     y_label="Y",
-    #     save_root="./results",
-    #     filename="plot_bars_demo"
-    # )
-    #
-    # my_plotter.plot_error_grids(
-    #     ms=[1, 1, 1, 2, 2, 3, 3, 3, 3],
-    #     ns=[4, 5, 6, 4, 5, 6, 4, 5, 6],
-    #     ys=[1, 1, 1, 1, 1, 1, 1, 1, 1],
-    #     predict_ys=[1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9],
-    #     x_label="X",
-    #     y_label="Y",
-    #     legend_label="Error",
-    #     save_root="./results",
-    #     filename="plot_error_grids_demo"
-    # )
-    #
-    # my_plotter.plot_grids(
-    #     x_list=[1, 1, 1, 2, 2, 3, 3, 3, 3],
-    #     y_list=[4, 5, 6, 4, 5, 6, 4, 5, 6],
-    #     z_list=[1.1, 2.2, 1.3, 1.4, 4.5, 1.6, 1.7, 1.8, 4.9],
-    #     x_label="X",
-    #     y_label="Y",
-    #     legend_label="Error",
-    #     save_root="./results",
-    #     filename="plot_grids_demo"
-    # )
-    #
-    # my_plotter.plot_acc_bars(
-    #     bar_data_list=[
-    #         [1, 2, 3, 4],
-    #         [2, 3, 4, 5],
-    #         [3, 4, 5, 6],
-    #         [7, 8, 9, 10]
-    #     ],
-    #     legend_label_list=["1", "2", "3", "4"],
-    #     x_label="X",
-    #     y_label="Y",
-    #     save_root="./results",
-    #     filename="plot_acc_bars_demo",
-    #     y_min=0,
-    #     y_max=40,
-    # )
+
+    my_plotter.plot_bars(
+        x_data=["0", "1.0", "2", "3.5"],
+        bar_data_list=[
+            [1, 2, 3, 4],
+            [2, 3, 4, 5],
+            [3, 4, 5, 6],
+            [7, 8, 9, 10]
+        ],
+        legend_label_list=["1", "2", "3", "4"],
+        x_label="X",
+        y_label="Y",
+        save_root="./results",
+        filename="plot_bars_demo"
+    )
+
+    my_plotter.plot_error_grids(
+        ms=[1, 1, 1, 2, 2, 3, 3, 3, 3],
+        ns=[4, 5, 6, 4, 5, 6, 4, 5, 6],
+        ys=[1, 1, 1, 1, 1, 1, 1, 1, 1],
+        predict_ys=[1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9],
+        x_label="X",
+        y_label="Y",
+        legend_label="Error",
+        save_root="./results",
+        filename="plot_error_grids_demo"
+    )
+
+    my_plotter.plot_grids(
+        x_list=[1, 1, 1, 2, 2, 3, 3, 3, 3],
+        y_list=[4, 5, 6, 4, 5, 6, 4, 5, 6],
+        z_list=[1.1, 2.2, 1.3, 1.4, 4.5, 1.6, 1.7, 1.8, 4.9],
+        x_label="X",
+        y_label="Y",
+        legend_label="Error",
+        save_root="./results",
+        filename="plot_grids_demo"
+    )
+
+    my_plotter.plot_acc_bars(
+        bar_data_list=[
+            [1, 2, 3, 4],
+            [2, 3, 4, 5],
+            [3, 4, 5, 6],
+            [7, 8, 9, 10]
+        ],
+        legend_label_list=["1", "2", "3", "4"],
+        x_label="X",
+        y_label="Y",
+        save_root="./results",
+        filename="plot_acc_bars_demo",
+        y_min=0,
+        y_max=40,
+    )
