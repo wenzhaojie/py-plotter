@@ -62,24 +62,24 @@ if __name__ == "__main__":
     y4 = [1, 6, 3, 8, 6, 4, 3, 1, 3, 0]
     y5 = [0, 2, 3, 4, 2, 1, 6, 8, 5, 1]
     #
-    # my_plotter.plot_lines(
-    #     x_list=[[i for i in range(len(y1))] for i in range(5)],
-    #     line_data_list=[y1, y2],
-    #     legend_label_list=["y1", "y2"],
-    #     data_label_list=[["1","2","3","4","5","6","7","8","9","10"],["a","b","c","d","e","f","g","h","i","j"]],
-    #     x_label="X",
-    #     y_label="Y",
-    #     x_grid=True,
-    #     y_grid=True,
-    #     y_min=-10,
-    #     y_max=10,
-    #     is_marker=True,
-    #     legend_loc="best",
-    #     legend_title="Legend",
-    #     title="This is a demo!",
-    #     save_root="./results",
-    #     filename="plot_lines_demo"
-    # )
+    my_plotter.plot_lines(
+        x_list=[[i for i in range(len(y1))] for i in range(5)],
+        line_data_list=[y1, y2],
+        legend_label_list=["y1", "y2"],
+        data_label_list=[["1","2","3","4","5","6","7","8","9","10"],["a","b","c","d","e","f","g","h","i","j"]],
+        x_label="X",
+        y_label="Y",
+        x_grid=True,
+        y_grid=True,
+        y_min=-10,
+        y_max=10,
+        is_marker=True,
+        legend_loc="best",
+        legend_title="Legend",
+        title="This is a demo!",
+        save_root="./results",
+        filename="plot_lines_demo"
+    )
     #
     # my_plotter.plot_cdfs(
     #     cdf_data_list=[y1, y2, y3, y4, y5],

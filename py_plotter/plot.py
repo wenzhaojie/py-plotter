@@ -35,8 +35,11 @@ class Plotter(Pyplot_config):
         pass
 
     # 用于画折线图, 有几条线就画几个
-    def plot_lines(self, x_list=None, line_data_list=None, data_label_list=None, legend_label_list=None, x_label="x", y_label="y", title=None,
-                   x_grid=False, y_grid=True, y_min=None, y_max=None, x_tick_ndigits=1, y_tick_ndigits=2, is_marker=False,
+    def plot_lines(self, x_list=None, line_data_list=None, data_label_list=None, legend_label_list=None, x_label="x",
+                   y_label="y", title=None,
+                   x_grid=False, y_grid=True, y_min=None, y_max=None, x_tick_ndigits=1, y_tick_ndigits=2,
+                   is_marker=False,
+                   line_width=2.0,  # 新增参数用于控制线条粗细
                    save_root="./", filename="demo.png", is_show=False, legend_ncol=1, bbox_to_anchor=None,
                    legend_loc="best", legend_title="legend"):
         # 如果 save_root 没有创建，则创建一个
@@ -50,18 +53,19 @@ class Plotter(Pyplot_config):
             for index, y in enumerate(line_data_list):
                 if is_marker:
                     plt.plot(x_list[index], y, color=self.color_list[index], linestyle=self.linestyle_list[index],
-                             label=legend_label_list[index], marker=self.marker_list[index])
+                             label=legend_label_list[index], marker=self.marker_list[index],
+                             linewidth=line_width)  # 使用line_width参数
                 else:
                     plt.plot(x_list[index], y, color=self.color_list[index], linestyle=self.linestyle_list[index],
-                             label=legend_label_list[index])
+                             label=legend_label_list[index], linewidth=line_width)  # 使用line_width参数
         else:
             for index, y in enumerate(line_data_list):
                 if is_marker:
                     plt.plot(x_list[index], y, color=self.color_list[index], linestyle=self.linestyle_list[index],
-                             marker=self.marker_list[index])
+                             marker=self.marker_list[index], linewidth=line_width)  # 使用line_width参数
                 else:
-                    plt.plot(x_list[index], y, color=self.color_list[index], linestyle=self.linestyle_list[index])
-
+                    plt.plot(x_list[index], y, color=self.color_list[index], linestyle=self.linestyle_list[index],
+                             linewidth=line_width)  # 使用line_width参数
         plt.xlabel(x_label, fontsize=self.label_size)
         plt.ylabel(y_label, fontsize=self.label_size)
         # 判断是否绘制title
