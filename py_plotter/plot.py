@@ -268,7 +268,7 @@ class Plotter(Pyplot_config):
         return {"x": val, "y": fs_rv_dist.cdf(val)}
 
     # 绘制 cdf 图
-    def plot_cdfs(self, x_label="x", y_label="cdf", legend_title="legend", legend_ncol=1, bbox_to_anchor=None,
+    def plot_cdfs(self, x_label="x", y_label="cdf", is_no_legend=False, legend_title="legend", legend_ncol=1, bbox_to_anchor=None,
                   x_tick_ndigits=1, y_tick_ndigits=1, num_x_ticks=5, num_y_ticks=5,
                   legend_loc="best", cdf_data_list=None, legend_label_list=None, is_marker=False, linewidth=2, alpha=1,
                   save_root="./", filename="demo.png", is_show=False):
@@ -319,10 +319,11 @@ class Plotter(Pyplot_config):
             ax.yaxis.set_major_locator(MaxNLocator(integer=False, prune="both", nbins=num_y_ticks))
 
         # 创建图例
-        legend = plt.legend(fontsize=self.legend_size, title=legend_title, loc=legend_loc, ncol=legend_ncol,
-                            bbox_to_anchor=bbox_to_anchor)
-        legend.get_title().set_fontsize(fontsize=self.legend_size)
-        legend._legend_box.align = "left"
+        if not is_no_legend:
+            legend = plt.legend(fontsize=self.legend_size, title=legend_title, loc=legend_loc, ncol=legend_ncol,
+                                bbox_to_anchor=bbox_to_anchor)
+            legend.get_title().set_fontsize(fontsize=self.legend_size)
+            legend._legend_box.align = "left"
 
         plt.tight_layout()
         savepath = os.path.join(save_root, filename)
