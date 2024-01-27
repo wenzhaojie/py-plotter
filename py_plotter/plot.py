@@ -122,6 +122,8 @@ class Plotter(Pyplot_config):
         # 展示图片
         if is_show:
             plt.show()
+        # 释放内存
+        plt.close()
 
     # 绘制条形图
     def plot_bars(self, x_label="x", y_label="y", legend_title="legend", legend_ncol=1, bbox_to_anchor=None, y_tick_ndigits=2,
@@ -188,6 +190,8 @@ class Plotter(Pyplot_config):
         # 展示图片
         if is_show:
             plt.show()
+        # 释放内存
+        plt.close()
         pass
 
     def plot_stack_bars(self, x_label="x", y_label="y", legend_title="legend", legend_ncol=1, bbox_to_anchor=None, y_tick_ndigits=2,
@@ -258,6 +262,8 @@ class Plotter(Pyplot_config):
         # 展示图片
         if is_show:
             plt.show()
+        # 释放内存
+        plt.close()
         pass
 
     @staticmethod
@@ -332,6 +338,8 @@ class Plotter(Pyplot_config):
         # 展示图片
         if is_show:
             plt.show()
+        # 释放内存
+        plt.close()
         pass
 
     # 绘制 box 图
@@ -414,6 +422,8 @@ class Plotter(Pyplot_config):
         # 展示图片
         if is_show:
             plt.show()
+        # 释放内存
+        plt.close()
 
     def plot_error_grids(self, ms: list, ns: list, ys: list, predict_ys: list, x_tick_ndigits=0, y_tick_ndigits=0,
                          x_label='Memory Size (MB)', y_label='Jobs', legend_label="Relative Error",
@@ -457,6 +467,8 @@ class Plotter(Pyplot_config):
         # 展示图片
         if is_show:
             plt.show()
+        # 释放内存
+        plt.close()
 
     def plot_grids(self, x_list: list, y_list: list, z_list: list, x_tick_ndigits=1, y_tick_ndigits=0,
                    x_label="Memory Size (MB)", y_label="Jobs",
@@ -500,6 +512,8 @@ class Plotter(Pyplot_config):
         # 展示图片
         if is_show:
             plt.show()
+        # 释放内存
+        plt.close()
 
     def plot_acc_bars(self, bar_data_list=None, bar_width=0.35, x_label="x", y_label="y",
                       legend_loc="best", legend_title="legend", legend_ncol=1, bbox_to_anchor=None,
@@ -558,6 +572,8 @@ class Plotter(Pyplot_config):
         # 展示图片
         if is_show:
             plt.show()
+        # 释放内存
+        plt.close()
 
     # 在Plotter类中添加以下方法
     def plot_violin(self, data: List[np.ndarray], x_labels: List[str], y_label: str,
@@ -602,6 +618,8 @@ class Plotter(Pyplot_config):
         # 展示图片
         if is_show:
             plt.show()
+        # 释放内存
+        plt.close()
 
     def plot_violin_twin(self, data: List[tuple], x_labels: List[str], y_label: str, legend_label_list: List[str] = None,
                     title: str = None, save_root: str = "./", filename: str = "violin_twin_demo.png", is_show: bool = False):
@@ -647,3 +665,6 @@ class Plotter(Pyplot_config):
         # 展示图片
         if is_show:
             plt.show()
+
+        # 释放内存
+        plt.close()
