@@ -154,3 +154,21 @@ if __name__ == "__main__":
         y_min=0,
         y_max=40,
     )
+
+    my_plotter.plot_acc_bars(
+        bar_data_list=[
+            [1, 2, 3, 4],
+            [2, 3, 4, 5],
+            [3, 4, 5, 6],
+            [7, 8, 9, 10]
+        ],
+        legend_label_list=["1", "2", "3", "4"],
+        x_label="中文X",
+        y_label="中文Y",
+        save_root="./results",
+        filename="plot_acc_bars_demo_CH",
+        y_min=0,
+        y_max=40,
+    )
+
+

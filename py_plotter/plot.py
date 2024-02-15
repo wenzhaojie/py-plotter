@@ -30,8 +30,12 @@ class Pyplot_config:
 
 
 class Plotter(Pyplot_config):
-    def __init__(self, figsize=(20, 6), fontsize=30):
+    def __init__(self, figsize=(20, 6), fontsize=30, font="Arial Unicode MS"):
         super().__init__(figsize=figsize, fontsize=fontsize)
+
+        # 全局设置
+        plt.rcParams['font.sans-serif'] = [font]  # 指定默认字体为黑体
+        plt.rcParams['axes.unicode_minus'] = False  # 解决保存图像时负号'-'显示为方块的问题
         pass
 
     # 用于画折线图, 有几条线就画几个
