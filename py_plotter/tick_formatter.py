@@ -12,8 +12,14 @@ class CustomFormatter(ticker.Formatter):
             return str(int(x))
         else:
             if self.use_sci:
-                # 使用科学计数法
-                return f"{x:.{self.ndigits}e}"
+                # 格式化为1.0x10^n形式
+                s = f"{x:.{self.ndigits}e}"
+                base, exponent = s.split('e')
+                exponent = int(exponent)  # 转换为整数
+                if exponent == 0:
+                    return f"{base}"
+                else:
+                    return fr"${base} \times 10^{{{exponent}}}$"
             else:
                 # 保留ndigits位小数
                 return f"{x:.{self.ndigits}f}"
