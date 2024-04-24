@@ -62,91 +62,74 @@ class Plotter(Pyplot_config):
     def plot_lines(self, x_list=None, line_data_list=None, data_label_list=None, legend_label_list=None, x_label="x",
                    y_label="y", title=None,
                    x_grid=False, y_grid=True, y_min=None, y_max=None, x_tick_ndigits=1, y_tick_ndigits=2,
-                   is_marker=False,
+                   is_marker=False, is_x_tick_sci=False, is_y_tick_sci=False,
                    line_width=2.0,  # 新增参数用于控制线条粗细
                    save_root="./", filename="demo.png", is_show=False, legend_ncol=1, bbox_to_anchor=None,
                    legend_loc="best", legend_title="legend"):
-        # 如果 save_root 没有创建，则创建一个
         os.makedirs(save_root, exist_ok=True)
-        # 如果没有指定x的值，就用正整数列进行生成
-        if x_list == None:
-            x_list = [[i for i in range(len(line_data_list[0]))] for i in range(len(line_data_list))]
+        if x_list is None:
+            x_list = [[i for i in range(len(line_data_list[0]))] for _ in range(len(line_data_list))]
         fig = plt.figure(figsize=self.figsize, dpi=self.dpi)
 
-        if legend_label_list != None:
+        if legend_label_list is not None:
             for index, y in enumerate(line_data_list):
                 if is_marker:
                     plt.plot(x_list[index], y, color=self.color_list[index], linestyle=self.linestyle_list[index],
                              label=legend_label_list[index], marker=self.marker_list[index],
-                             linewidth=line_width)  # 使用line_width参数
+                             linewidth=line_width)
                 else:
                     plt.plot(x_list[index], y, color=self.color_list[index], linestyle=self.linestyle_list[index],
-                             label=legend_label_list[index], linewidth=line_width)  # 使用line_width参数
+                             label=legend_label_list[index], linewidth=line_width)
         else:
             for index, y in enumerate(line_data_list):
                 if is_marker:
                     plt.plot(x_list[index], y, color=self.color_list[index], linestyle=self.linestyle_list[index],
-                             marker=self.marker_list[index], linewidth=line_width)  # 使用line_width参数
+                             marker=self.marker_list[index], linewidth=line_width)
                 else:
                     plt.plot(x_list[index], y, color=self.color_list[index], linestyle=self.linestyle_list[index],
-                             linewidth=line_width)  # 使用line_width参数
+                             linewidth=line_width)
+
         plt.xlabel(x_label, fontsize=self.label_size)
         plt.ylabel(y_label, fontsize=self.label_size)
-        # 判断是否绘制title
-        if title != None:
+        if title is not None:
             plt.title(title, fontdict={'size': self.title_size})
-        # 判断是否绘制legend
-        if legend_label_list != None:
-            # 创建图例
+
+        if legend_label_list is not None:
             legend = plt.legend(fontsize=self.legend_size, title=legend_title, loc=legend_loc, ncol=legend_ncol,
                                 bbox_to_anchor=bbox_to_anchor)
-            legend.get_title().set_fontsize(fontsize=self.legend_size)
+            legend.get_title().set_fontsize(self.legend_size)
             legend._legend_box.align = "left"
 
-        # 让角标变0
         ax = plt.gca()
-        x_formatter = CustomFormatter(ndigits=x_tick_ndigits)
-        y_formatter = CustomFormatter(ndigits=y_tick_ndigits)
+        x_formatter = CustomFormatter(ndigits=x_tick_ndigits, use_sci=is_x_tick_sci)
+        y_formatter = CustomFormatter(ndigits=y_tick_ndigits, use_sci=is_y_tick_sci)
         ax.xaxis.set_major_formatter(x_formatter)
         ax.yaxis.set_major_formatter(y_formatter)
 
-        # 调整 tick 的字体大小
         plt.xticks(fontsize=self.tick_size)
         plt.yticks(fontsize=self.tick_size)
 
-        # 分别在每一条线上的数据点上显示对应数据标签
-        if data_label_list != None:
+        if data_label_list is not None:
             for index, y in enumerate(line_data_list):
-                data_label = data_label_list[index]
-                i = 0
-                for x, y in zip(x_list[index], line_data_list[index]):
-                    plt.text(x, y, data_label[i], fontsize=self.data_size)
-                    i += 1
+                for x, y, label in zip(x_list[index], line_data_list[index], data_label_list[index]):
+                    plt.text(x, y, label, fontsize=self.data_size)
 
-        # 网格线
         if x_grid and y_grid:
-            cmd = "both"
-            plt.grid(axis=cmd)
-        else:
-            if x_grid:
-                cmd = "x"
-                plt.grid(axis=cmd)
-            if y_grid:
-                cmd = "y"
-                plt.grid(axis=cmd)
+            plt.grid(which='both')
+        elif x_grid:
+            plt.grid(axis='x')
+        elif y_grid:
+            plt.grid(axis='y')
 
-        # 设置ylim
-        if y_min != None and y_max != None:
+        if y_min is not None and y_max is not None:
             plt.ylim(y_min, y_max)
 
         plt.tight_layout()
         savepath = os.path.join(save_root, filename)
-        print(f"图片保存到:{savepath}")
+        print(f"图片保存到: {savepath}")
         plt.savefig(savepath)
-        # 展示图片
         if is_show:
             plt.show()
-        # 释放内存
         plt.close()
 
     # 绘制条形图

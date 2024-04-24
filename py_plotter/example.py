@@ -61,6 +61,8 @@ if __name__ == "__main__":
     y3 = [1, 2, 3, 4, 2, 4, 6, 1, 5, 1]
     y4 = [1, 6, 3, 8, 6, 4, 3, 1, 3, 0]
     y5 = [0, 2, 3, 4, 2, 1, 6, 8, 5, 1]
+    y11 = [10000, 20000, 30000, 20000, 10000, 20000, 30000, 20000, 10000, 20000]
+    y22 = [-10000, 0, 10000, 0, -10000, -10000, 0, 10000, 0, -10000]
     #
     my_plotter.plot_lines(
         x_list=[[i for i in range(len(y1))] for i in range(5)],
@@ -79,6 +81,31 @@ if __name__ == "__main__":
         title="This is a demo!",
         save_root="./results",
         filename="plot_lines_demo"
+    )
+
+
+    my_plotter.plot_lines(
+        x_list=[[i for i in range(len(y1))] for i in range(5)],
+        line_data_list=[y11, y22],
+        legend_label_list=["y11", "y22"],
+        data_label_list=[["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+                         ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"]],
+        x_label="X",
+        y_label="Y",
+        x_grid=True,
+        y_grid=True,
+        y_min=None,
+        y_max=None,
+        is_x_tick_sci=False,
+        is_y_tick_sci=True,
+        x_tick_ndigits=0,
+        y_tick_ndigits=0,
+        is_marker=True,
+        legend_loc="best",
+        legend_title="Legend",
+        title="This is a demo!",
+        save_root="./results",
+        filename="plot_lines_sci_demo"
     )
 
     my_plotter.plot_cdfs(
