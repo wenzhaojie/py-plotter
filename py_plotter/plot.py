@@ -61,7 +61,7 @@ class Plotter(Pyplot_config):
     # 用于画折线图, 有几条线就画几个
     def plot_lines(self, x_list=None, line_data_list=None, data_label_list=None, legend_label_list=None, x_label="x",
                    y_label="y", title=None,
-                   x_grid=False, y_grid=True, y_min=None, y_max=None, x_tick_ndigits=1, y_tick_ndigits=2,
+                   x_grid=False, y_grid=True, y_min=None, y_max=None, x_tick_ndigits=1, y_tick_ndigits=2, y_tick_interval=None,
                    is_marker=False, is_x_tick_sci=False, is_y_tick_sci=False,
                    line_width=2.0,  # 新增参数用于控制线条粗细
                    save_root="./", filename="demo.png", is_show=False, legend_ncol=1, bbox_to_anchor=None,
@@ -108,6 +108,14 @@ class Plotter(Pyplot_config):
 
         plt.xticks(fontsize=self.tick_size)
         plt.yticks(fontsize=self.tick_size)
+
+        if y_tick_interval is not None:
+            # 如果y_min 和 y_max 为None，初始化一个
+            if y_min is None:
+                y_min = int(np.min(line_data_list))
+            if y_max is None:
+                y_max = int(np.max(line_data_list)) + 2
+            ax.set_yticks(np.arange(y_min, y_max + y_tick_interval, y_tick_interval))
 
         if data_label_list is not None:
             for index, y in enumerate(line_data_list):

@@ -92,6 +92,7 @@ if __name__ == "__main__":
                          ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"]],
         x_label="X",
         y_label="Y",
+        y_tick_interval=20000,
         x_grid=True,
         y_grid=True,
         y_min=None,
