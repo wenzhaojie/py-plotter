@@ -54,7 +54,8 @@ class Plotter(Pyplot_config):
 
         # 全局设置font
         if font != None:
-            plt.rcParams['font.sans-serif'] = [font]  # 指定默认字体为黑体
+            plt.rcParams['font.family'] = 'sans-serif'
+            plt.rcParams['font.sans-serif'] = 'Arial'
             plt.rcParams['axes.unicode_minus'] = False  # 解决保存图像时负号'-'显示为方块的问题
 
     # 用于画折线图, 有几条线就画几个
