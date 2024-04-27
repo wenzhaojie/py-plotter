@@ -54,15 +54,8 @@ class Plotter(Pyplot_config):
 
         # 全局设置font
         if font != None:
-            # 获得所有可用的字体
-            import matplotlib.font_manager
-            all_fonts = matplotlib.font_manager.findSystemFonts(fontpaths=None, fontext='ttf')
-            # 判断是否存在该字体
-            if font in all_fonts:
-                plt.rcParams['font.sans-serif'] = [font]  # 指定默认字体为黑体
-                plt.rcParams['axes.unicode_minus'] = False  # 解决保存图像时负号'-'显示为方块的问题
-            else:
-                pass
+            plt.rcParams['font.sans-serif'] = [font]  # 指定默认字体为黑体
+            plt.rcParams['axes.unicode_minus'] = False  # 解决保存图像时负号'-'显示为方块的问题
 
     # 用于画折线图, 有几条线就画几个
     def plot_lines(self, x_list=None, line_data_list=None, data_label_list=None, legend_label_list=None, x_label="x",
