@@ -30,7 +30,7 @@ class Pyplot_config:
 
 
 class Plotter(Pyplot_config):
-    def __init__(self, figsize=(20, 6), fontsize=30, font="Arial Unicode MS", dpi=None, label_size=None, tick_size=None, title_size=None, legend_size=None, data_size=None, bar_width=None, legend_title_fontsize=None):
+    def __init__(self, figsize=(20, 6), fontsize=30, font="Arial", dpi=None, label_size=None, tick_size=None, title_size=None, legend_size=None, data_size=None, bar_width=None, legend_title_fontsize=None):
         # 先调用父类的构造函数，初始默认值
         super().__init__(figsize=figsize, fontsize=fontsize)
 
