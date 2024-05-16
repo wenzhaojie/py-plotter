@@ -16,3 +16,10 @@ sans_serif_fonts = plt.rcParams['font.sans-serif']
 
 # 打印所有设置的字体列表
 print(sans_serif_fonts)
+
+
+# 获取当前所有设置的 plt.rcParams['font.serif'] 的值
+sans_serif_fonts = plt.rcParams['font.serif']
+
+# 打印所有设置的字体列表
+print(sans_serif_fonts)

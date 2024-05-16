@@ -9,6 +9,7 @@ from py_plotter.tick_formatter import CustomFormatter
 from matplotlib.ticker import MaxNLocator
 import matplotlib.patches as mpatches
 
+
 class Pyplot_config:
     def __init__(self, figsize=(20, 6), fontsize=30):
         self.color_list = ["b", "g", "r", "c", "#EE82EE", "y", "grey", "brown", "purple"]
@@ -55,6 +56,7 @@ class Plotter(Pyplot_config):
         # 全局设置font
         if font != None:
             plt.rcParams['font.family'] = 'sans-serif'
+            plt.rcParams['mathtext.fontset'] = 'stix'
             plt.rcParams['font.sans-serif'] = font
             plt.rcParams['axes.unicode_minus'] = False  # 解决保存图像时负号'-'显示为方块的问题
 
