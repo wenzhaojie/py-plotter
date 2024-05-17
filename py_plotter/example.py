@@ -33,14 +33,18 @@ def test_violin_twin():
 
 def test_stack_bars():
     # 创建一个Plotter实例
-    plotter = Plotter(figsize=(8, 6))
+    plotter = Plotter(
+        figsize=(8, 6),
+        font_thirdparty="SimSun",
+        font="Arial Unicode MS"
+    )
 
     # 准备数据
-    x_data = ['A', 'B', 'C', 'D', 'E']
+    x_data = ['A艾', 'B不', 'C', 'D', 'E']
     bar_data_list = [[1, 2, 3, 4, 5], [2, 3, 4, 5, 6], [3, 4, 5, 6, 7]]
-    legend_label_list = ['Category 1', 'Category 2', 'Category 3']
+    legend_label_list = ['分类 1', '分类 2', '分类 3']
 
-    plotter.plot_stack_bars(x_label="x-axis", y_label="y-axis", legend_title="Categories", legend_ncol=1, bbox_to_anchor=None,
+    plotter.plot_stack_bars(x_label="x-轴", y_label="y-轴", legend_title="Categories分类", legend_ncol=1, bbox_to_anchor=None,
                       y_tick_ndigits=2,
                       legend_loc="best", x_data=x_data, bar_data_list=bar_data_list,
                       legend_label_list=legend_label_list, y_min=None, y_max=None,
