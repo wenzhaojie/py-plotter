@@ -323,7 +323,8 @@ class Plotter(Pyplot_config):
         return {"x": val, "y": fs_rv_dist.cdf(val)}
 
     # 绘制 cdf 图
-    def plot_cdfs(self, x_label="x", y_label="cdf", is_no_legend=False, legend_title="legend", legend_ncol=1, bbox_to_anchor=None,
+    def plot_cdfs(self, x_label="x", y_label="cdf", is_no_legend=False, legend_title="legend", legend_ncol=1,
+                  bbox_to_anchor=None,
                   x_tick_ndigits=1, y_tick_ndigits=1, num_x_ticks=5, num_y_ticks=5,
                   legend_loc="best", cdf_data_list=None, legend_label_list=None, is_marker=False, linewidth=2, alpha=1,
                   save_root="./", filename="demo.png", is_show=False):
@@ -331,16 +332,17 @@ class Plotter(Pyplot_config):
         fig = plt.figure(figsize=self.figsize, dpi=self.dpi)
         ax = fig.add_subplot(111)
         # 设置轴的标签字体和大小
-        ax.set_xlabel(x_label, fontdict={'size': self.label_size})
-        ax.set_ylabel(y_label, fontdict={'size': self.label_size})
+        font_property = FontProperties(fname=self.font_path, size=self.label_size)
+        ax.set_xlabel(x_label, fontproperties=font_property)
+        ax.set_ylabel(y_label, fontproperties=font_property)
         # 调整 tick 的字体大小
-        plt.xticks(fontsize=self.tick_size)
-        plt.yticks(fontsize=self.tick_size)
+        font_property_ticks = FontProperties(fname=self.font_path, size=self.tick_size)
+        plt.xticks(fontsize=self.tick_size, fontproperties=font_property_ticks)
+        plt.yticks(fontsize=self.tick_size, fontproperties=font_property_ticks)
 
         # 让角标变0
         x_formatter = CustomFormatter(ndigits=x_tick_ndigits)
         y_formatter = CustomFormatter(ndigits=y_tick_ndigits)
-
 
         ax.xaxis.set_major_formatter(x_formatter)
         ax.yaxis.set_major_formatter(y_formatter)
@@ -367,17 +369,19 @@ class Plotter(Pyplot_config):
             )
 
         # 设置x轴的刻度
-        if num_x_ticks != None:
+        if num_x_ticks is not None:
             ax.xaxis.set_major_locator(MaxNLocator(integer=False, prune="both", nbins=num_x_ticks))
         # 设置y轴的刻度
-        if num_y_ticks != None:
+        if num_y_ticks is not None:
             ax.yaxis.set_major_locator(MaxNLocator(integer=False, prune="both", nbins=num_y_ticks))
 
         # 创建图例
         if not is_no_legend:
+            font_property_legend = FontProperties(fname=self.font_path, size=self.legend_size)
             legend = plt.legend(fontsize=self.legend_size, title=legend_title, loc=legend_loc, ncol=legend_ncol,
-                                bbox_to_anchor=bbox_to_anchor)
-            legend.get_title().set_fontsize(fontsize=self.legend_size)
+                                bbox_to_anchor=bbox_to_anchor, prop=font_property_legend)  # 设置图例项的字体属性
+            legend.get_title().set_fontsize(self.legend_size)  # 设置图例标题的字体大小
+            legend.get_title().set_font_properties(font_property_legend)  # 设置图例标题的字体属性
             legend._legend_box.align = "left"
 
         plt.tight_layout()
@@ -389,7 +393,6 @@ class Plotter(Pyplot_config):
             plt.show()
         # 释放内存
         plt.close()
-        pass
 
     # 绘制 box 图
     def plot_boxes(self, x: List[str] = None, box_data_list=None, legend_label_list=None, x_label="Replicas",

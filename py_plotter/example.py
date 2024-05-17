@@ -135,9 +135,11 @@ if __name__ == "__main__":
 
     my_plotter.plot_cdfs(
         cdf_data_list=[y1, y2, y3, y4, y5],
-        legend_label_list=["y1", "y2", "y3", "y4", "y5"],
+        legend_label_list=["y1以", "y2为", "y3", "y4", "y5"],
         legend_loc="best",
-        legend_title="Legend",
+        x_label="X轴",
+        y_label="Y轴",
+        legend_title="Legend图例",
         save_root="./results",
         filename="plot_cdfs_demo"
     )
