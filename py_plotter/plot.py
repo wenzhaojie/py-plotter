@@ -170,7 +170,8 @@ class Plotter(Pyplot_config):
         plt.close()
 
     # 绘制条形图
-    def plot_bars(self, x_label="x", y_label="y", legend_title="legend", legend_ncol=1, bbox_to_anchor=None, y_tick_ndigits=2,
+    def plot_bars(self, x_label="x", y_label="y", legend_title="legend", legend_ncol=1, bbox_to_anchor=None,
+                  y_tick_ndigits=2,
                   legend_loc="best", x_data=None, bar_data_list=None, legend_label_list=None, y_min=None, y_max=None,
                   x_grid=False, y_grid=True, save_root="./", filename="demo.png", is_hatch=False,
                   is_show=False):
@@ -178,8 +179,9 @@ class Plotter(Pyplot_config):
         plt.figure(figsize=self.figsize, dpi=self.dpi)
         ax = plt.subplot(111)
         # 设置轴的标签字体和大小
-        ax.set_xlabel(x_label, fontdict={'size': self.label_size})
-        ax.set_ylabel(y_label, fontdict={'size': self.label_size})
+        font_property = FontProperties(fname=self.font_path, size=self.label_size)
+        ax.set_xlabel(x_label, fontproperties=font_property)
+        ax.set_ylabel(y_label, fontproperties=font_property)
 
         # 分别画柱子
         r_base = np.arange(len(x_data))
@@ -197,8 +199,8 @@ class Plotter(Pyplot_config):
 
         # 添加x轴名称
         plt.xticks([r + (len(bar_data_list) - 1) / 2 * self.bar_width for r in range(len(x_data))], x_data,
-                   size=self.label_size)
-        plt.yticks(size=self.label_size)
+                   size=self.label_size, fontproperties=font_property)
+        plt.yticks(size=self.label_size, fontproperties=font_property)
 
         # 让角标变0
         ax = plt.gca()
@@ -206,9 +208,11 @@ class Plotter(Pyplot_config):
         ax.yaxis.set_major_formatter(y_formatter)
 
         # 创建图例
+        font_property_legend = FontProperties(fname=self.font_path, size=self.legend_size)
         legend = plt.legend(fontsize=self.legend_size, title=legend_title, loc=legend_loc, ncol=legend_ncol,
-                            bbox_to_anchor=bbox_to_anchor)
-        legend.get_title().set_fontsize(fontsize=self.legend_size)
+                            bbox_to_anchor=bbox_to_anchor, prop=font_property_legend)  # 设置图例项的字体属性
+        legend.get_title().set_fontsize(self.legend_size)  # 设置图例标题的字体大小
+        legend.get_title().set_font_properties(font_property_legend)  # 设置图例标题的字体属性
         legend._legend_box.align = "left"
 
         # 网格线
@@ -224,7 +228,7 @@ class Plotter(Pyplot_config):
                 plt.grid(axis=cmd)
 
         # 设置ylim
-        if y_min != None and y_max != None:
+        if y_min is not None and y_max is not None:
             plt.ylim(y_min, y_max)
         plt.tight_layout()
 
@@ -236,7 +240,6 @@ class Plotter(Pyplot_config):
             plt.show()
         # 释放内存
         plt.close()
-        pass
 
     def plot_stack_bars(self, x_label="x", y_label="y", legend_title="legend", legend_ncol=1, bbox_to_anchor=None, y_tick_ndigits=2,
                   legend_loc="best", x_data=None, bar_data_list=None, legend_label_list=None, y_min=None, y_max=None,

@@ -150,16 +150,17 @@ if __name__ == "__main__":
     )
 
     my_plotter.plot_bars(
-        x_data=["0", "1.0", "2", "3.5"],
+        x_data=["0零", "1.0", "2", "3.5"],
         bar_data_list=[
             [1, 2, 3, 4],
             [2, 3, 4, 5],
             [3, 4, 5, 6],
             [7, 8, 9, 10]
         ],
-        legend_label_list=["1", "2", "3", "4"],
-        x_label="X",
-        y_label="Y",
+        legend_label_list=["1一", "2二", "3三", "4四"],
+        x_label="X轴",
+        y_label="Y轴",
+        legend_title="Legend图例",
         save_root="./results",
         filename="plot_bars_demo"
     )
