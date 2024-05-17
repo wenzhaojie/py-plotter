@@ -505,11 +505,12 @@ class Plotter(Pyplot_config):
         cb.set_label(legend_label, fontdict={'size': self.label_size})
 
         # 设置x轴和y轴的标签字体和大小
-        ax.set_xlabel(x_label, fontdict={'size': self.label_size})
-        ax.set_ylabel(y_label, fontdict={'size': self.label_size})
+        font_property = FontProperties(fname=self.font_path, size=self.label_size)
+        ax.set_xlabel(x_label, fontproperties=font_property)
+        ax.set_ylabel(y_label, fontproperties=font_property)
         # 设置x轴和y轴的刻度字体和大小
-        plt.xticks(xticks, u_ms.astype(int), size=self.label_size)
-        plt.yticks(yticks, u_ns.astype(int), size=self.label_size)
+        plt.xticks(xticks, u_ms.astype(int), size=self.label_size, fontproperties=font_property)
+        plt.yticks(yticks, u_ns.astype(int), size=self.label_size, fontproperties=font_property)
 
         # 让角标变0
         x_formatter = CustomFormatter(ndigits=x_tick_ndigits)
@@ -550,8 +551,9 @@ class Plotter(Pyplot_config):
         cb.set_label(legend_label, fontdict={'size': self.label_size})
 
         # 设置x轴和y轴的标签字体和大小
-        ax.set_xlabel(x_label, fontdict={'size': self.label_size})
-        ax.set_ylabel(y_label, fontdict={'size': self.label_size})
+        font_property = FontProperties(fname=self.font_path, size=self.label_size)
+        ax.set_xlabel(x_label, fontproperties=font_property)
+        ax.set_ylabel(y_label, fontproperties=font_property)
         # 设置x轴和y轴的刻度字体和大小
         plt.xticks(xticks, u_ms.astype(int), size=self.label_size)
         plt.yticks(yticks, u_ns.astype(int), size=self.label_size)
@@ -581,8 +583,9 @@ class Plotter(Pyplot_config):
         fig = plt.figure(dpi=self.dpi, figsize=self.figsize)
         ax = plt.subplot(111)
         # 设置轴的标签字体和大小
-        ax.set_xlabel(x_label, fontdict={'size': self.label_size})
-        ax.set_ylabel(y_label, fontdict={'size': self.label_size})
+        font_property = FontProperties(fname=self.font_path, size=self.label_size)
+        ax.set_xlabel(x_label, fontproperties=font_property)
+        ax.set_ylabel(y_label, fontproperties=font_property)
 
         ind = np.arange(len(bar_data_list))  # the x locations for the groups
         bottom = [0 for i in range(len(bar_data_list[0]))]
@@ -596,14 +599,16 @@ class Plotter(Pyplot_config):
                 bottom[i] += bar_data[i]
 
         # 添加x轴名称
-        plt.xticks(ticks=ind, size=self.label_size, labels=legend_label_list)
-        plt.yticks(size=self.label_size)
+        plt.xticks(ticks=ind, size=self.label_size, labels=legend_label_list, fontproperties=font_property)
+        plt.yticks(size=self.label_size, fontproperties=font_property)
 
         # 创建图例
+        font_property_legend = FontProperties(fname=self.font_path, size=self.legend_size)
         legend = plt.legend(fontsize=self.legend_size, title=legend_title, loc=legend_loc,
                             ncol=legend_ncol,
-                            bbox_to_anchor=bbox_to_anchor)
-        legend.get_title().set_fontsize(fontsize=self.legend_size)
+                            bbox_to_anchor=bbox_to_anchor, prop=font_property_legend)
+        legend.get_title().set_fontsize(self.legend_size)
+        legend.get_title().set_font_properties(font_property_legend)
         legend._legend_box.align = "left"
 
         # 网格线
@@ -619,7 +624,7 @@ class Plotter(Pyplot_config):
                 plt.grid(axis=cmd)
 
         # 设置ylim
-        if y_min != None and y_max != None:
+        if y_min is not None and y_max is not None:
             plt.ylim(y_min, y_max)
 
         plt.tight_layout()
@@ -651,21 +656,29 @@ class Plotter(Pyplot_config):
             pc.set_alpha(0.8)
 
         # 设置坐标轴和标题
-        plt.xticks(np.arange(1, len(x_labels) + 1), x_labels, fontsize=self.tick_size)
-        plt.xlabel("Categories", fontsize=self.label_size)
-        plt.ylabel(y_label, fontsize=self.label_size)
+        font_property = FontProperties(fname=self.font_path, size=self.label_size)
+        plt.xticks(np.arange(1, len(x_labels) + 1), x_labels, fontsize=self.tick_size, fontproperties=font_property)
+        plt.xlabel("Categories", fontsize=self.label_size, fontproperties=font_property)
+        plt.ylabel(y_label, fontsize=self.label_size, fontproperties=font_property)
 
         if title != None:
             plt.title(title, fontdict={'size': self.title_size})
+            # 调整 title 的字体大小
+            font_property = FontProperties(fname=self.font_path, size=self.title_size)
+            plt.title(title, fontproperties=font_property)
 
         # 调整 tick 的字体大小
-        plt.yticks(fontsize=self.tick_size)
+        plt.yticks(fontsize=self.tick_size, fontproperties=font_property)
 
         # 添加图例
         if legend_label_list is not None:
             legend_patches = [mpatches.Patch(color=color, label=label) for color, label in
                               zip(self.color_list, legend_label_list)]
-            plt.legend(handles=legend_patches, fontsize=self.legend_size, loc='best')
+            font_property_legend = FontProperties(fname=self.font_path, size=self.legend_size)
+            legend = plt.legend(handles=legend_patches, fontsize=self.legend_size, loc='best', prop=font_property_legend)
+
+            legend.get_title().set_fontsize(self.legend_size)
+            legend.get_title().set_font_properties(font_property_legend)
 
         plt.tight_layout()
         savepath = os.path.join(save_root, filename)
@@ -699,20 +712,31 @@ class Plotter(Pyplot_config):
                                   color=self.color_list[j], alpha=0.8)
 
         # 设置坐标轴和标题
-        plt.xticks(np.arange(1, len(x_labels) + 1), x_labels, fontsize=self.tick_size)
-        plt.xlabel("Categories", fontsize=self.label_size)
-        plt.ylabel(y_label, fontsize=self.label_size)
+        font_property = FontProperties(fname=self.font_path, size=self.label_size)
+        plt.xticks(np.arange(1, len(x_labels) + 1), x_labels, fontsize=self.tick_size, fontproperties=font_property)
+        plt.xlabel("Categories", fontsize=self.label_size, fontproperties=font_property)
+        plt.ylabel(y_label, fontsize=self.label_size, fontproperties=font_property)
 
         if title != None:
             plt.title(title, fontdict={'size': self.title_size})
+            # 调整 title 的字体大小
+            font_property = FontProperties(fname=self.font_path, size=self.title_size)
+            plt.title(title, fontproperties=font_property)
+
 
         # 调整 tick 的字体大小
-        plt.yticks(fontsize=self.tick_size)
+        plt.yticks(fontsize=self.tick_size, fontproperties=font_property)
 
         # 添加图例
         if legend_label_list is not None:
             legend_patches = [mpatches.Patch(color=color, label=label) for color, label in zip(self.color_list, legend_label_list)]
-            plt.legend(handles=legend_patches, fontsize=self.legend_size, loc='best')
+            # 设置图例标题的字体大小
+            font_property_legend = FontProperties(fname=self.font_path, size=self.legend_size)
+            legend = plt.legend(handles=legend_patches, fontsize=self.legend_size, loc='best', prop=font_property_legend)
+
+            legend.get_title().set_fontsize(self.legend_size)
+            legend.get_title().set_font_properties(font_property_legend)
+
 
         plt.tight_layout()
         savepath = os.path.join(save_root, filename)

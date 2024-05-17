@@ -3,13 +3,17 @@ import numpy as np
 
 def test_violin():
     # 创建一个Plotter实例
-    plotter = Plotter(figsize=(8, 6))
+    plotter = Plotter(
+        figsize=(8, 6),
+        font_thirdparty="SimSun",
+        font="Arial Unicode MS"
+    )
 
     # 准备数据
     data = [np.random.normal(0, 1, 100), np.random.normal(1, 2, 100), np.random.normal(2, 1, 100)]
-    x_labels = ['Category 1', 'Category 2', 'Category 3']
-    y_label = 'Value'
-    legend_label_list = ['Group 1', 'Group 2', 'Group 3']
+    x_labels = ['类别 1', 'Category 2', 'Category 3']
+    y_label = 'Value值'
+    legend_label_list = ['组 1', 'Group 2', 'Group 3']
 
     # 绘制violin图，添加图例
     plotter.plot_violin(data, x_labels, y_label, legend_label_list, title='Violin Plot with Legend Demo', is_show=True, save_root="./results")
@@ -17,17 +21,21 @@ def test_violin():
 
 def test_violin_twin():
     # 创建一个Plotter实例
-    plotter = Plotter(figsize=(8, 6))
+    plotter = Plotter(
+        figsize=(8, 6),
+        font_thirdparty="SimSun",
+        font="Arial Unicode MS"
+    )
 
     # 准备数据
     data = [(np.random.normal(0, 1, 100), np.random.normal(1, 2, 100)), (np.random.normal(2, 1, 100),
             np.random.normal(3, 1, 100))]
-    x_labels = ['Category 1', 'Category 2']
-    y_label = 'Value'
-    legend_label_list = ['Group 1', 'Group 2']
+    x_labels = ['类别 1', 'Category 2']
+    y_label = 'Value值'
+    legend_label_list = ['组 1', 'Group 2']
 
     # 绘制半边violin图，添加图例
-    plotter.plot_violin_twin(data, x_labels, y_label, legend_label_list, title='Half Violin Plot with Legend Demo',
+    plotter.plot_violin_twin(data, x_labels, y_label, legend_label_list, title='Half 小提琴Violin Plot with Legend Demo',
                         is_show=True, save_root="./results")
 
 
@@ -72,8 +80,8 @@ def test_chinese_stack_bars():
 
 
 if __name__ == "__main__":
-    # test_violin()
-    # test_violin_twin()
+    test_violin()
+    test_violin_twin()
     test_stack_bars()
 
 
@@ -177,9 +185,9 @@ if __name__ == "__main__":
         ns=[4, 5, 6, 4, 5, 6, 4, 5, 6],
         ys=[1, 1, 1, 1, 1, 1, 1, 1, 1],
         predict_ys=[1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9],
-        x_label="X",
-        y_label="Y",
-        legend_label="Error",
+        x_label="X轴",
+        y_label="Y周",
+        legend_label="Error误差",
         save_root="./results",
         filename="plot_error_grids_demo"
     )
@@ -188,9 +196,9 @@ if __name__ == "__main__":
         x_list=[1, 1, 1, 2, 2, 3, 3, 3, 3],
         y_list=[4, 5, 6, 4, 5, 6, 4, 5, 6],
         z_list=[1.1, 2.2, 1.3, 1.4, 4.5, 1.6, 1.7, 1.8, 4.9],
-        x_label="X",
-        y_label="Y",
-        legend_label="Error",
+        x_label="X轴",
+        y_label="Y轴",
+        legend_label="Error误差",
         save_root="./results",
         filename="plot_grids_demo"
     )
@@ -202,11 +210,12 @@ if __name__ == "__main__":
             [3, 4, 5, 6],
             [7, 8, 9, 10]
         ],
-        legend_label_list=["1", "2", "3", "4"],
-        x_label="X",
-        y_label="Y",
+        legend_label_list=["1一", "2二", "3", "4"],
+        x_label="X轴",
+        y_label="Y轴",
         save_root="./results",
         filename="plot_acc_bars_demo",
+        legend_title="Legend图例",
         y_min=0,
         y_max=40,
     )
