@@ -145,12 +145,13 @@ if __name__ == "__main__":
     )
 
     my_plotter.plot_boxes(
-        x=["2.0", "1.0", "3",],
+        x=["2.0", "1.0", "三",],
         box_data_list=[[y1, y2, y3], [y2, y3, y5], [y4, y5, y1], [y4, y1, y2]],
-        legend_label_list=["1234", "2345", "3451", "4512"],
-        x_label="x",
-        y_label="y",
+        legend_label_list=["一万二", "2345", "3451", "4512"],
+        x_label="x轴",
+        y_label="y轴",
         is_data_label=True,
+        legend_title="Legend图例",
         save_root="./results",
         filename="plot_boxes_demo"
     )

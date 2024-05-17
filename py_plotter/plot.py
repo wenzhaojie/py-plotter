@@ -404,8 +404,10 @@ class Plotter(Pyplot_config):
         fig = plt.figure(figsize=self.figsize, dpi=300)
         ax = fig.add_subplot(111)
         ax.yaxis.grid(linestyle='dashed')
-        ax.set_ylabel(y_label, fontsize=self.label_size)
-        ax.set_xlabel(x_label, fontsize=self.label_size)
+        # 设置轴的标签字体和大小
+        font_property = FontProperties(fname=self.font_path, size=self.label_size)
+        ax.set_ylabel(y_label, fontproperties=font_property)
+        ax.set_xlabel(x_label, fontproperties=font_property)
 
         width = 0.2
         interval = width * 1.25
@@ -438,7 +440,7 @@ class Plotter(Pyplot_config):
         offset = interval * (len(legend_label_list) - 1) / 2
         ax.set_xticks([pos + offset for pos in position])
 
-        ax.set_xticklabels(x, fontsize=self.label_size, rotation=0)
+        ax.set_xticklabels(x, fontsize=self.label_size, rotation=0, fontproperties=font_property)
         ax.tick_params(axis='both', which='major', labelsize=self.label_size)
 
         # 让角标变0
@@ -446,13 +448,15 @@ class Plotter(Pyplot_config):
         y_formatter = CustomFormatter(ndigits=y_tick_ndigits)
         ax.yaxis.set_major_formatter(y_formatter)
 
-        plt.xticks(size=self.label_size)
-        plt.yticks(size=self.label_size)
+        plt.xticks(size=self.label_size, fontproperties=font_property)
+        plt.yticks(size=self.label_size, fontproperties=font_property)
 
+        # 创建图例
+        font_property_legend = FontProperties(fname=self.font_path, size=self.legend_size)
         legend = plt.legend(boxes, legend_label_list, fontsize=self.legend_size, title=legend_title, loc=legend_loc,
-                            ncol=legend_ncol,
-                            bbox_to_anchor=bbox_to_anchor)
-        legend.get_title().set_fontsize(fontsize=self.legend_size)
+                            ncol=legend_ncol, bbox_to_anchor=bbox_to_anchor, prop=font_property_legend)  # 设置图例项的字体属性
+        legend.get_title().set_fontsize(self.legend_size)  # 设置图例标题的字体大小
+        legend.get_title().set_font_properties(font_property_legend)  # 设置图例标题的字体属性
         legend._legend_box.align = "left"
 
         # 在图上显示box的平均值
@@ -461,10 +465,11 @@ class Plotter(Pyplot_config):
                 box_data = box_data_list[i]
                 for j in range(len(x)):
                     mean = np.mean(box_data[j])
-                    ax.text(float(position[j] + interval * i), mean, '%.1f' % mean, ha='center', va='bottom', fontsize=self.data_size)
+                    ax.text(float(position[j] + interval * i), mean, '%.1f' % mean, ha='center', va='bottom',
+                            fontsize=self.data_size)
 
         # 设置ylim
-        if y_min != None and y_max != None:
+        if y_min is not None and y_max is not None:
             plt.ylim(y_min, y_max)
 
         plt.tight_layout()
