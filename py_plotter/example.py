@@ -52,6 +52,7 @@ def test_chinese_stack_bars():
     plotter = Plotter(
         figsize=(8, 6),
         font="Arial Unicode MS",
+        font_thirdparty="SimSun"
     )
 
     # 准备数据
@@ -72,7 +73,8 @@ if __name__ == "__main__":
     test_stack_bars()
 
 
-    my_plotter = Plotter(figsize=(8, 6))
+    # my_plotter = Plotter(figsize=(8, 6), font_thirdparty="SimSun", font="Arial Unicode MS")
+    my_plotter = Plotter(figsize=(8, 6), font_thirdparty="SimHei", font="Arial Unicode MS")
 
     y1 = [1, 2, 3, 2, 1, 2, 3, 2, 1, 2]
     y2 = [-1, 0, 1, 0, -1, -1, 0, 1, 0, -1]
@@ -87,8 +89,8 @@ if __name__ == "__main__":
         line_data_list=[y1, y2],
         legend_label_list=["y1", "y2"],
         data_label_list=[["1","2","3","4","5","6","7","8","9","10"],["a","b","c","d","e","f","g","h","i","j"]],
-        x_label="X",
-        y_label="Y",
+        x_label="X轴",
+        y_label="Y轴",
         x_grid=True,
         y_grid=True,
         y_min=-10,

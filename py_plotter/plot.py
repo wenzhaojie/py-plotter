@@ -8,6 +8,7 @@ from typing import List
 from py_plotter.tick_formatter import CustomFormatter
 from matplotlib.ticker import MaxNLocator
 import matplotlib.patches as mpatches
+from matplotlib.font_manager import FontProperties
 
 
 class Pyplot_config:
@@ -31,7 +32,7 @@ class Pyplot_config:
 
 
 class Plotter(Pyplot_config):
-    def __init__(self, figsize=(20, 6), fontsize=30, font="Arial", dpi=None, label_size=None, tick_size=None, title_size=None, legend_size=None, data_size=None, bar_width=None, legend_title_fontsize=None):
+    def __init__(self, figsize=(20, 6), fontsize=30, font="Arial", font_thirdparty=None, dpi=None, label_size=None, tick_size=None, title_size=None, legend_size=None, data_size=None, bar_width=None, legend_title_fontsize=None):
         # 先调用父类的构造函数，初始默认值
         super().__init__(figsize=figsize, fontsize=fontsize)
 
@@ -58,17 +59,32 @@ class Plotter(Pyplot_config):
             plt.rcParams['font.family'] = 'sans-serif'
             plt.rcParams['mathtext.fontset'] = 'stix'
             plt.rcParams['font.sans-serif'] = font
+            plt.rcParams['font.serif'] = font
             plt.rcParams['axes.unicode_minus'] = False  # 解决保存图像时负号'-'显示为方块的问题
+        if font_thirdparty != None:
+            # 获取当前文件所在绝对路径
+            curr_path = os.path.abspath(__file__)
+            print(f"当前文件所在路径: {curr_path}")
+            # 获取当前文件所在目录
+            curr_dir = os.path.dirname(curr_path)
+            print(f"当前文件所在目录: {curr_dir}")
+            # 加载第三方字体
+            font_dir = os.path.join(curr_dir, "fonts")
+            self.font_path = os.path.join(font_dir, f"{font_thirdparty}.ttf")
+
+
 
     # 用于画折线图, 有几条线就画几个
     def plot_lines(self, x_list=None, line_data_list=None, data_label_list=None, legend_label_list=None, x_label="x",
                    y_label="y", title=None,
-                   x_grid=False, y_grid=True, y_min=None, y_max=None, x_tick_ndigits=1, y_tick_ndigits=2, y_tick_interval=None,
+                   x_grid=False, y_grid=True, y_min=None, y_max=None, x_tick_ndigits=1, y_tick_ndigits=2,
+                   y_tick_interval=None,
                    is_marker=False, is_x_tick_sci=False, is_y_tick_sci=False,
                    line_width=2.0,  # 新增参数用于控制线条粗细
                    save_root="./", filename="demo.png", is_show=False, legend_ncol=1, bbox_to_anchor=None,
                    legend_loc="best", legend_title="legend"):
         os.makedirs(save_root, exist_ok=True)
+
         if x_list is None:
             x_list = [[i for i in range(len(line_data_list[0]))] for _ in range(len(line_data_list))]
         fig = plt.figure(figsize=self.figsize, dpi=self.dpi)
@@ -91,15 +107,22 @@ class Plotter(Pyplot_config):
                     plt.plot(x_list[index], y, color=self.color_list[index], linestyle=self.linestyle_list[index],
                              linewidth=line_width)
 
-        plt.xlabel(x_label, fontsize=self.label_size)
-        plt.ylabel(y_label, fontsize=self.label_size)
+        #
+        font_property = FontProperties(fname=self.font_path, size=self.label_size)
+        plt.xlabel(x_label, fontsize=self.label_size, fontproperties=font_property)  # 使用字体属性
+        plt.ylabel(y_label, fontsize=self.label_size, fontproperties=font_property)  # 使用字体属性
         if title is not None:
-            plt.title(title, fontdict={'size': self.title_size})
+            # title
+            font_property = FontProperties(fname=self.font_path, size=self.title_size)
+            plt.title(title, fontdict={'size': self.title_size, 'fontproperties': font_property})  # 使用字体属性
 
         if legend_label_list is not None:
+            #
+            font_property = FontProperties(fname=self.font_path, size=self.legend_size)
             legend = plt.legend(fontsize=self.legend_size, title=legend_title, loc=legend_loc, ncol=legend_ncol,
-                                bbox_to_anchor=bbox_to_anchor)
+                                bbox_to_anchor=bbox_to_anchor, prop=font_property)  # 设置字体属性
             legend.get_title().set_fontsize(self.legend_size)
+            legend.get_title().set_font_properties(font_property)  # 设置图例标题的字体属性
             legend._legend_box.align = "left"
 
         ax = plt.gca()
@@ -108,8 +131,10 @@ class Plotter(Pyplot_config):
         ax.xaxis.set_major_formatter(x_formatter)
         ax.yaxis.set_major_formatter(y_formatter)
 
-        plt.xticks(fontsize=self.tick_size)
-        plt.yticks(fontsize=self.tick_size)
+        #
+        font_property = FontProperties(fname=self.font_path, size=self.tick_size)
+        plt.xticks(fontsize=self.tick_size, fontproperties=font_property)  # 使用字体属性
+        plt.yticks(fontsize=self.tick_size, fontproperties=font_property)  # 使用字体属性
 
         if y_tick_interval is not None:
             # 如果y_min 和 y_max 为None，初始化一个
@@ -122,7 +147,9 @@ class Plotter(Pyplot_config):
         if data_label_list is not None:
             for index, y in enumerate(line_data_list):
                 for x, y, label in zip(x_list[index], line_data_list[index], data_label_list[index]):
-                    plt.text(x, y, label, fontsize=self.data_size)
+                    #
+                    font_property = FontProperties(fname=self.font_path, size=self.data_size)
+                    plt.text(x, y, label, fontsize=self.data_size, fontproperties=font_property)  # 使用字体属性
 
         if x_grid and y_grid:
             plt.grid(which='both')
@@ -426,7 +453,7 @@ class Plotter(Pyplot_config):
                 box_data = box_data_list[i]
                 for j in range(len(x)):
                     mean = np.mean(box_data[j])
-                    ax.text(position[j] + interval * i, mean, '%.1f' % mean, ha='center', va='bottom', fontsize=self.data_size)
+                    ax.text(float(position[j] + interval * i), mean, '%.1f' % mean, ha='center', va='bottom', fontsize=self.data_size)
 
         # 设置ylim
         if y_min != None and y_max != None:
