@@ -79,13 +79,7 @@ def test_chinese_stack_bars():
                       x_grid=False, y_grid=True, save_root="./results", filename="plot_chinese_stack_bars", is_show=True)
 
 
-if __name__ == "__main__":
-    test_violin()
-    test_violin_twin()
-    test_stack_bars()
-
-
-    # my_plotter = Plotter(figsize=(8, 6), font_thirdparty="SimSun", font="Arial Unicode MS")
+def test_plot_lines_cdf_boxes():
     my_plotter = Plotter(figsize=(8, 6), font_thirdparty="SimHei", font="Arial Unicode MS")
 
     y1 = [1, 2, 3, 2, 1, 2, 3, 2, 1, 2]
@@ -100,7 +94,8 @@ if __name__ == "__main__":
         x_list=[[i for i in range(len(y1))] for i in range(5)],
         line_data_list=[y1, y2],
         legend_label_list=["y1", "y2"],
-        data_label_list=[["1","2","3","4","5","6","7","8","9","10"],["a","b","c","d","e","f","g","h","i","j"]],
+        data_label_list=[["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+                         ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"]],
         x_label="X轴",
         y_label="Y轴",
         x_grid=True,
@@ -114,8 +109,6 @@ if __name__ == "__main__":
         save_root="./results",
         filename="plot_lines_demo"
     )
-
-
     my_plotter.plot_lines(
         x_list=[[i for i in range(len(y1))] for i in range(5)],
         line_data_list=[y11, y22],
@@ -153,7 +146,7 @@ if __name__ == "__main__":
     )
 
     my_plotter.plot_boxes(
-        x=["2.0", "1.0", "三",],
+        x=["2.0", "1.0", "三", ],
         box_data_list=[[y1, y2, y3], [y2, y3, y5], [y4, y5, y1], [y4, y1, y2]],
         legend_label_list=["一万二", "2345", "3451", "4512"],
         x_label="x轴",
@@ -164,6 +157,9 @@ if __name__ == "__main__":
         filename="plot_boxes_demo"
     )
 
+
+def test_plot_bars():
+    my_plotter = Plotter(figsize=(8, 6), font_thirdparty="SimHei", font="Arial Unicode MS")
     my_plotter.plot_bars(
         x_data=["0零", "1.0", "2", "3.5"],
         bar_data_list=[
@@ -180,6 +176,8 @@ if __name__ == "__main__":
         filename="plot_bars_demo"
     )
 
+def test_plot_error_grids():
+    my_plotter = Plotter(figsize=(8, 6), font_thirdparty="SimHei", font="Arial Unicode MS")
     my_plotter.plot_error_grids(
         ms=[1, 1, 1, 2, 2, 3, 3, 3, 3],
         ns=[4, 5, 6, 4, 5, 6, 4, 5, 6],
@@ -192,6 +190,8 @@ if __name__ == "__main__":
         filename="plot_error_grids_demo"
     )
 
+def test_plot_grids():
+    my_plotter = Plotter(figsize=(8, 6), font_thirdparty="SimHei", font="Arial Unicode MS")
     my_plotter.plot_grids(
         x_list=[1, 1, 1, 2, 2, 3, 3, 3, 3],
         y_list=[4, 5, 6, 4, 5, 6, 4, 5, 6],
@@ -203,6 +203,8 @@ if __name__ == "__main__":
         filename="plot_grids_demo"
     )
 
+def test_plot_acc_bars():
+    my_plotter = Plotter(figsize=(8, 6), font_thirdparty="SimHei", font="Arial Unicode MS")
     my_plotter.plot_acc_bars(
         bar_data_list=[
             [1, 2, 3, 4],
@@ -220,21 +222,16 @@ if __name__ == "__main__":
         y_max=40,
     )
 
-    my_plotter.plot_acc_bars(
-        bar_data_list=[
-            [1, 2, 3, 4],
-            [2, 3, 4, 5],
-            [3, 4, 5, 6],
-            [7, 8, 9, 10]
-        ],
-        legend_label_list=["1", "2", "3", "4"],
-        x_label="中文X",
-        y_label="中文Y",
-        save_root="./results",
-        filename="plot_acc_bars_demo_CH",
-        y_min=0,
-        y_max=40,
-    )
 
+
+if __name__ == "__main__":
+    test_violin()
+    test_violin_twin()
+    test_stack_bars()
+    test_plot_lines_cdf_boxes()
+    test_plot_bars()
+    test_plot_error_grids()
+    test_plot_grids()
+    test_plot_acc_bars()
     test_chinese_stack_bars()
 

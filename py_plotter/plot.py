@@ -10,6 +10,8 @@ from matplotlib.ticker import MaxNLocator
 import matplotlib.patches as mpatches
 from matplotlib.font_manager import FontProperties
 
+from typing import Literal
+from itertools import zip_longest
 
 class Pyplot_config:
     def __init__(self, figsize=(20, 6), fontsize=30):
@@ -122,8 +124,7 @@ class Plotter(Pyplot_config):
             legend = plt.legend(fontsize=self.legend_size, title=legend_title, loc=legend_loc, ncol=legend_ncol,
                                 bbox_to_anchor=bbox_to_anchor, prop=font_property)  # 设置字体属性
             legend.get_title().set_fontsize(self.legend_size)
-            legend.get_title().set_font_properties(font_property)  # 设置图例标题的字体属性
-            legend._legend_box.align = "left"
+            legend.get_title().set_fontproperties(font_property)  # 设置图例标题的字体属性
 
         ax = plt.gca()
         x_formatter = CustomFormatter(ndigits=x_tick_ndigits, use_sci=is_x_tick_sci)
@@ -212,10 +213,10 @@ class Plotter(Pyplot_config):
         legend = plt.legend(fontsize=self.legend_size, title=legend_title, loc=legend_loc, ncol=legend_ncol,
                             bbox_to_anchor=bbox_to_anchor, prop=font_property_legend)  # 设置图例项的字体属性
         legend.get_title().set_fontsize(self.legend_size)  # 设置图例标题的字体大小
-        legend.get_title().set_font_properties(font_property_legend)  # 设置图例标题的字体属性
-        legend._legend_box.align = "left"
+        legend.get_title().set_fontproperties(font_property_legend)  # 设置图例标题的字体属性
 
         # 网格线
+        cmd: Literal['both', 'x', 'y']
         if x_grid and y_grid:
             cmd = "both"
             plt.grid(axis=cmd)
@@ -286,10 +287,10 @@ class Plotter(Pyplot_config):
         legend = plt.legend(fontsize=self.legend_size, title=legend_title, loc=legend_loc, ncol=legend_ncol,
                             bbox_to_anchor=bbox_to_anchor, prop=font_property_legend)  # 设置图例项的字体属性
         legend.get_title().set_fontsize(self.legend_size)  # 设置图例标题的字体大小
-        legend.get_title().set_font_properties(font_property_legend)  # 设置图例标题的字体属性
-        legend._legend_box.align = "left"
+        legend.get_title().set_fontproperties(font_property_legend)  # 设置图例标题的字体属性
 
         # 网格线
+        cmd: Literal['both', 'x', 'y']
         if x_grid and y_grid:
             cmd = "both"
             plt.grid(axis=cmd)
@@ -381,8 +382,7 @@ class Plotter(Pyplot_config):
             legend = plt.legend(fontsize=self.legend_size, title=legend_title, loc=legend_loc, ncol=legend_ncol,
                                 bbox_to_anchor=bbox_to_anchor, prop=font_property_legend)  # 设置图例项的字体属性
             legend.get_title().set_fontsize(self.legend_size)  # 设置图例标题的字体大小
-            legend.get_title().set_font_properties(font_property_legend)  # 设置图例标题的字体属性
-            legend._legend_box.align = "left"
+            legend.get_title().set_fontproperties(font_property_legend)  # 设置图例标题的字体属性
 
         plt.tight_layout()
         savepath = os.path.join(save_root, filename)
@@ -456,8 +456,7 @@ class Plotter(Pyplot_config):
         legend = plt.legend(boxes, legend_label_list, fontsize=self.legend_size, title=legend_title, loc=legend_loc,
                             ncol=legend_ncol, bbox_to_anchor=bbox_to_anchor, prop=font_property_legend)  # 设置图例项的字体属性
         legend.get_title().set_fontsize(self.legend_size)  # 设置图例标题的字体大小
-        legend.get_title().set_font_properties(font_property_legend)  # 设置图例标题的字体属性
-        legend._legend_box.align = "left"
+        legend.get_title().set_fontproperties(font_property_legend)  # 设置图例标题的字体属性
 
         # 在图上显示box的平均值
         if is_data_label:
@@ -497,8 +496,8 @@ class Plotter(Pyplot_config):
         u_ms, u_ns = np.sort(np.unique(ms)), np.sort(np.unique(ns))
         xticks, yticks = range(len(u_ms)), range(len(u_ns))
         Xs, Ys = np.meshgrid(xticks, yticks)
-        zs = [[mapping.setdefault((u_ms[Xs[i][j]], u_ns[Ys[i][j]]), 0) for j in range(len(xticks))] for i in
-              range(len(yticks))]
+        zs = np.array([[mapping.setdefault((u_ms[Xs[i][j]], u_ns[Ys[i][j]]), 0) for j in range(len(xticks))] for i in
+              range(len(yticks))])
         graph = ax.pcolor(Xs, Ys, zs, shading='auto')
         cb = fig.colorbar(graph)
         cb.ax.tick_params(labelsize=self.label_size)
@@ -543,8 +542,8 @@ class Plotter(Pyplot_config):
         u_ms, u_ns = np.sort(np.unique(x_list)), np.sort(np.unique(y_list))
         xticks, yticks = range(len(u_ms)), range(len(u_ns))
         Xs, Ys = np.meshgrid(xticks, yticks)
-        zs = [[mapping.setdefault((u_ms[Xs[i][j]], u_ns[Ys[i][j]]), 0) for j in range(len(xticks))] for i in
-              range(len(yticks))]
+        zs = np.array([[mapping.setdefault((u_ms[Xs[i][j]], u_ns[Ys[i][j]]), 0) for j in range(len(xticks))] for i in
+              range(len(yticks))])
         graph = ax.pcolor(Xs, Ys, zs, shading='auto')
         cb = fig.colorbar(graph)
         cb.ax.tick_params(labelsize=self.label_size)
@@ -608,10 +607,10 @@ class Plotter(Pyplot_config):
                             ncol=legend_ncol,
                             bbox_to_anchor=bbox_to_anchor, prop=font_property_legend)
         legend.get_title().set_fontsize(self.legend_size)
-        legend.get_title().set_font_properties(font_property_legend)
-        legend._legend_box.align = "left"
+        legend.get_title().set_fontproperties(font_property_legend)
 
         # 网格线
+        cmd: Literal['both', 'x', 'y']
         if x_grid and y_grid:
             cmd = "both"
             plt.grid(axis=cmd)
@@ -650,10 +649,11 @@ class Plotter(Pyplot_config):
         parts = plt.violinplot(data, showmeans=True, showextrema=True, showmedians=True)
 
         # 设置violinplot的颜色和样式
-        for i, (pc, color) in enumerate(zip(parts['bodies'], self.color_list)):
-            pc.set_facecolor(color)
-            pc.set_edgecolor(self.edge_color_list[i])
-            pc.set_alpha(0.8)
+        for i, (pc, color) in enumerate(zip_longest(parts['bodies'], self.color_list, fillvalue=None)):
+            if pc is not None and color is not None:
+                pc.set_facecolor(color)
+                pc.set_edgecolor(self.edge_color_list[i])
+                pc.set_alpha(0.8)
 
         # 设置坐标轴和标题
         font_property = FontProperties(fname=self.font_path, size=self.label_size)
@@ -678,7 +678,7 @@ class Plotter(Pyplot_config):
             legend = plt.legend(handles=legend_patches, fontsize=self.legend_size, loc='best', prop=font_property_legend)
 
             legend.get_title().set_fontsize(self.legend_size)
-            legend.get_title().set_font_properties(font_property_legend)
+            legend.get_title().set_fontproperties(font_property_legend)
 
         plt.tight_layout()
         savepath = os.path.join(save_root, filename)
@@ -735,7 +735,7 @@ class Plotter(Pyplot_config):
             legend = plt.legend(handles=legend_patches, fontsize=self.legend_size, loc='best', prop=font_property_legend)
 
             legend.get_title().set_fontsize(self.legend_size)
-            legend.get_title().set_font_properties(font_property_legend)
+            legend.get_title().set_fontproperties(font_property_legend)
 
 
         plt.tight_layout()
