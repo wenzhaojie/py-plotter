@@ -791,11 +791,12 @@ class Plotter(Pyplot_config):
         ax.yaxis.set_major_formatter(y_formatter)
 
         # 创建图例
-        font_property_legend = FontProperties(fname=self.font_path, size=self.legend_size)
-        legend = plt.legend(fontsize=self.legend_size, title=legend_title, loc=legend_loc, ncol=legend_ncol,
-                            bbox_to_anchor=bbox_to_anchor, prop=font_property_legend)
-        legend.get_title().set_fontsize(self.legend_size)
-        legend.get_title().set_fontproperties(font_property_legend)
+        if legend_label_list is not None:
+            font_property_legend = FontProperties(fname=self.font_path, size=self.legend_size)
+            legend = plt.legend(fontsize=self.legend_size, title=legend_title, loc=legend_loc, ncol=legend_ncol,
+                                bbox_to_anchor=bbox_to_anchor, prop=font_property_legend)
+            legend.get_title().set_fontsize(self.legend_size)
+            legend.get_title().set_fontproperties(font_property_legend)
 
         # 网格线
         cmd: Literal['both', 'x', 'y']
