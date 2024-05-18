@@ -774,11 +774,18 @@ class Plotter(Pyplot_config):
         else:
             hatch_list = [None for i in range(10)]
 
-        for index, (bar_label, bar_data) in enumerate(zip(legend_label_list, bar_data_list)):
-            r = [x + self.bar_width * (index) for x in r_base]
-            ax.bar(r, bar_data, color=self.color_list[index], width=self.bar_width,
-                   edgecolor=self.edge_color_list[index], label=legend_label_list[index],
-                   hatch=hatch_list[index])
+        if legend_label_list is not None:
+
+            for index, (bar_label, bar_data) in enumerate(zip(legend_label_list, bar_data_list)):
+                r = [x + self.bar_width * (index) for x in r_base]
+                ax.bar(r, bar_data, color=self.color_list[index], width=self.bar_width,
+                       edgecolor=self.edge_color_list[index], label=legend_label_list[index],
+                       hatch=hatch_list[index])
+        else:
+            for index, bar_data in enumerate(bar_data_list):
+                r = [x + self.bar_width * (index) for x in r_base]
+                ax.bar(r, bar_data, color=self.color_list[index], width=self.bar_width,
+                       edgecolor=self.edge_color_list[index], hatch=hatch_list[index])
 
         # 添加x轴名称
         plt.xticks([r + (len(bar_data_list) - 1) / 2 * self.bar_width for r in range(len(x_data))], x_data,
