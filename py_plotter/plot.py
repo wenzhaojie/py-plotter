@@ -829,14 +829,23 @@ class Plotter(Pyplot_config):
             plt.ylim(line_y_min, line_y_max)
 
         # 画折线
-        for index, y in enumerate(line_data_list):
-            if is_marker:
-                ax2.plot(x_data, y, color=self.color_list[index], linestyle=self.linestyle_list[index],
-                         marker=self.marker_list[index], linewidth=linewidth, alpha=alpha,
-                         label=legend_label_list[index])
-            else:
-                ax2.plot(x_data, y, color=self.color_list[index], linestyle=self.linestyle_list[index],
-                         linewidth=linewidth, alpha=alpha, label=legend_label_list[index])
+        if legend_label_list is not None:
+            for index, y in enumerate(line_data_list):
+                if is_marker:
+                    ax2.plot(x_data, y, color=self.color_list[index], linestyle=self.linestyle_list[index],
+                             marker=self.marker_list[index], linewidth=linewidth, alpha=alpha,
+                             label=legend_label_list[index])
+                else:
+                    ax2.plot(x_data, y, color=self.color_list[index], linestyle=self.linestyle_list[index],
+                             linewidth=linewidth, alpha=alpha, label=legend_label_list[index])
+        else:
+            for index, y in enumerate(line_data_list):
+                if is_marker:
+                    ax2.plot(x_data, y, color=self.color_list[index], linestyle=self.linestyle_list[index],
+                             marker=self.marker_list[index], linewidth=linewidth, alpha=alpha)
+                else:
+                    ax2.plot(x_data, y, color=self.color_list[index], linestyle=self.linestyle_list[index],
+                             linewidth=linewidth, alpha=alpha)
 
         plt.tight_layout()
 
