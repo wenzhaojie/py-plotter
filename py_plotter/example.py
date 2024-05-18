@@ -228,8 +228,6 @@ def test_plot_bars_and_lines():
     bar_data_list = [[10, 20, 15, 25, 30], [15, 25, 20, 30, 35]]
     legend_label_list = ['Group 1', 'Group 2']
     line_data_list = [[5, 10, 8, 12, 15], [8, 12, 10, 14, 18]]
-    line_legend_label_list = ['Line 1', 'Line 2']
-
     # 使用默认参数以及一些简单的测试数据调用函数
     my_plotter = Plotter(figsize=(8, 6), font_thirdparty="SimHei", font="Arial Unicode MS")
     my_plotter.plot_bars_and_lines(
@@ -239,7 +237,6 @@ def test_plot_bars_and_lines():
         bar_data_list=bar_data_list,
         legend_label_list=legend_label_list,
         line_data_list=line_data_list,
-        line_legend_label_list=line_legend_label_list,
         save_root="./results",
         filename="plot_bars_and_lines",
         legend_title="Legend图例",
