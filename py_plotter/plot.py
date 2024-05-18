@@ -16,6 +16,7 @@ from itertools import zip_longest
 class Pyplot_config:
     def __init__(self, figsize=(20, 6), fontsize=30):
         self.color_list = ["b", "g", "r", "c", "#EE82EE", "y", "grey", "brown", "purple"]
+        self.backup_color_list = ["r", "y"]
         self.hatch_list = [None, '...', 'x', '***', '|', '-', '/', '+', 'O', 'o', 'XXX', '.', '*']
         self.linestyle_list = [None, '--', '-.', ':', '-', '-', '-', '-']
         self.dash_list = [(2, 5), (4, 10), (3, 3, 2, 2), (5, 2, 20, 2), (5, 2), (1, 1, 5, 4), (5, 8), (2, 4, 5)]
@@ -757,7 +758,7 @@ class Plotter(Pyplot_config):
                             legend_loc="best", x_data=None, bar_data_list=None, legend_label_list=None, bar_y_min=None,
                             bar_y_max=None, line_y_min=None, line_y_max=None,
                             x_grid=False, y_grid=True, save_root="./", filename="demo.png", is_hatch=False,
-                            is_show=False, markersize=5,
+                            is_show=False, marker_size=5, marker_face_color='yellow', marker_edge_color='red',
                             line_data_list=None, is_marker=False, linewidth=2, alpha=1):
         plt.figure(figsize=self.figsize, dpi=self.dpi)
         ax = plt.subplot(111)
@@ -848,10 +849,10 @@ class Plotter(Pyplot_config):
         else:
             for index, y in enumerate(line_data_list):
                 if is_marker:
-                    ax2.plot(x_data, y, color=self.color_list[index], linestyle=self.linestyle_list[index],
-                             marker=self.marker_list[index], linewidth=linewidth, alpha=alpha, markersize=markersize)
+                    ax2.plot(x_data, y, color=self.backup_color_list[index], linestyle=self.linestyle_list[index],
+                             marker=self.marker_list[index], linewidth=linewidth, alpha=alpha, markersize=marker_size, markerfacecolor=marker_face_color, markeredgecolor=marker_edge_color)
                 else:
-                    ax2.plot(x_data, y, color=self.color_list[index], linestyle=self.linestyle_list[index],
+                    ax2.plot(x_data, y, color=self.backup_color_list[index], linestyle=self.linestyle_list[index],
                              linewidth=linewidth, alpha=alpha)
 
         plt.tight_layout()
