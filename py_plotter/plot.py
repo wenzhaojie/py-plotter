@@ -757,7 +757,7 @@ class Plotter(Pyplot_config):
                             legend_loc="best", x_data=None, bar_data_list=None, legend_label_list=None, bar_y_min=None,
                             bar_y_max=None, line_y_min=None, line_y_max=None,
                             x_grid=False, y_grid=True, save_root="./", filename="demo.png", is_hatch=False,
-                            is_show=False,
+                            is_show=False, markersize=5,
                             line_data_list=None, is_marker=False, linewidth=2, alpha=1):
         plt.figure(figsize=self.figsize, dpi=self.dpi)
         ax = plt.subplot(111)
@@ -772,7 +772,7 @@ class Plotter(Pyplot_config):
         if is_hatch:
             hatch_list = self.hatch_list
         else:
-            hatch_list = [None for i in range(10)]
+            hatch_list = [None for _ in range(10)]
 
         if legend_label_list is not None:
 
@@ -849,7 +849,7 @@ class Plotter(Pyplot_config):
             for index, y in enumerate(line_data_list):
                 if is_marker:
                     ax2.plot(x_data, y, color=self.color_list[index], linestyle=self.linestyle_list[index],
-                             marker=self.marker_list[index], linewidth=linewidth, alpha=alpha)
+                             marker=self.marker_list[index], linewidth=linewidth, alpha=alpha, markersize=markersize)
                 else:
                     ax2.plot(x_data, y, color=self.color_list[index], linestyle=self.linestyle_list[index],
                              linewidth=linewidth, alpha=alpha)
