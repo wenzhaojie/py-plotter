@@ -223,15 +223,45 @@ def test_plot_acc_bars():
     )
 
 
+def test_plot_bars_and_lines():
+    x_data = ['A', 'B', 'C', 'D', 'E']
+    bar_data_list = [[10, 20, 15, 25, 30], [15, 25, 20, 30, 35]]
+    legend_label_list = ['Group 1', 'Group 2']
+    line_data_list = [[5, 10, 8, 12, 15], [8, 12, 10, 14, 18]]
+    line_legend_label_list = ['Line 1', 'Line 2']
+
+    # 使用默认参数以及一些简单的测试数据调用函数
+    my_plotter = Plotter(figsize=(8, 6), font_thirdparty="SimHei", font="Arial Unicode MS")
+    my_plotter.plot_bars_and_lines(
+        x_data=x_data,
+        bar_y_label="Bar Y轴",
+        line_y_label="Line Y轴",
+        bar_data_list=bar_data_list,
+        legend_label_list=legend_label_list,
+        line_data_list=line_data_list,
+        line_legend_label_list=line_legend_label_list,
+        save_root="./results",
+        filename="plot_bars_and_lines",
+        legend_title="Legend图例",
+        bar_y_min=3,
+        bar_y_max=40,
+        line_y_min=0,
+        line_y_max=20,
+        bar_y_tick_ndigits=0,
+        line_y_tick_ndigits=1,
+    )
+
+
 
 if __name__ == "__main__":
-    test_violin()
-    test_violin_twin()
-    test_stack_bars()
-    test_plot_lines_cdf_boxes()
-    test_plot_bars()
-    test_plot_error_grids()
-    test_plot_grids()
-    test_plot_acc_bars()
-    test_chinese_stack_bars()
+    # test_violin()
+    # test_violin_twin()
+    # test_stack_bars()
+    # test_plot_lines_cdf_boxes()
+    # test_plot_bars()
+    # test_plot_error_grids()
+    # test_plot_grids()
+    # test_plot_acc_bars()
+    # test_chinese_stack_bars()
+    test_plot_bars_and_lines()
 

@@ -749,3 +749,104 @@ class Plotter(Pyplot_config):
 
         # 释放内存
         plt.close()
+
+    # 画柱状图和折线图在同一张图上
+    def plot_bars_and_lines(self, x_label="x", bar_y_label="y", line_y_label="y",
+                            legend_title="legend", legend_ncol=1, bbox_to_anchor=None,
+                            bar_y_tick_ndigits=2, line_y_tick_ndigits=2,
+                            legend_loc="best", x_data=None, bar_data_list=None, legend_label_list=None, bar_y_min=None,
+                            bar_y_max=None, line_y_min=None, line_y_max=None,
+                            x_grid=False, y_grid=True, save_root="./", filename="demo.png", is_hatch=False,
+                            is_show=False,
+                            line_data_list=None, line_legend_label_list=None, is_marker=False, linewidth=2, alpha=1):
+        plt.figure(figsize=self.figsize, dpi=self.dpi)
+        ax = plt.subplot(111)
+        # 设置轴的标签字体和大小
+        font_property = FontProperties(fname=self.font_path, size=self.label_size)
+        ax.set_xlabel(x_label, fontproperties=font_property)
+        ax.set_ylabel(bar_y_label, fontproperties=font_property)
+
+        # 分别画柱子
+        r_base = np.arange(len(x_data))
+        # 是否用阴影hatch区别
+        if is_hatch:
+            hatch_list = self.hatch_list
+        else:
+            hatch_list = [None for i in range(10)]
+
+        for index, (bar_label, bar_data) in enumerate(zip(legend_label_list, bar_data_list)):
+            r = [x + self.bar_width * (index) for x in r_base]
+            ax.bar(r, bar_data, color=self.color_list[index], width=self.bar_width,
+                   edgecolor=self.edge_color_list[index], label=legend_label_list[index],
+                   hatch=hatch_list[index])
+
+        # 添加x轴名称
+        plt.xticks([r + (len(bar_data_list) - 1) / 2 * self.bar_width for r in range(len(x_data))], x_data,
+                   size=self.label_size, fontproperties=font_property)
+        plt.yticks(size=self.label_size, fontproperties=font_property)
+
+        # 让角标变0
+        ax = plt.gca()
+        y_formatter = CustomFormatter(ndigits=bar_y_tick_ndigits)
+        ax.yaxis.set_major_formatter(y_formatter)
+
+        # 创建图例
+        font_property_legend = FontProperties(fname=self.font_path, size=self.legend_size)
+        legend = plt.legend(fontsize=self.legend_size, title=legend_title, loc=legend_loc, ncol=legend_ncol,
+                            bbox_to_anchor=bbox_to_anchor, prop=font_property_legend)
+        legend.get_title().set_fontsize(self.legend_size)
+        legend.get_title().set_fontproperties(font_property_legend)
+
+        # 网格线
+        cmd: Literal['both', 'x', 'y']
+        if x_grid and y_grid:
+            cmd = "both"
+            plt.grid(axis=cmd)
+        else:
+            if x_grid:
+                cmd = "x"
+                plt.grid(axis=cmd)
+            if y_grid:
+                cmd = "y"
+                plt.grid(axis=cmd)
+
+        # 设置ylim
+        if bar_y_min is not None and bar_y_max is not None:
+            plt.ylim(bar_y_min, bar_y_max)
+
+        # 创建第二个y轴用于折线图
+        ax2 = ax.twinx()
+        # 让角标变0
+        y_formatter = CustomFormatter(ndigits=line_y_tick_ndigits)
+        ax2.yaxis.set_major_formatter(y_formatter)
+        # 设置轴的标签字体和大小
+        ax2.set_ylabel(line_y_label, fontproperties=font_property)
+        # 设置 ax2的 ytick fontproperties
+        plt.yticks(size=self.label_size, fontproperties=font_property)
+        # 设置line 的 ylim
+        if line_y_min is not None and line_y_max is not None:
+            plt.ylim(line_y_min, line_y_max)
+
+        # 画折线
+        for index, y in enumerate(line_data_list):
+            if is_marker:
+                ax2.plot(x_data, y, color=self.color_list[index], linestyle=self.linestyle_list[index],
+                         marker=self.marker_list[index], linewidth=linewidth, alpha=alpha,
+                         label=line_legend_label_list[index])
+            else:
+                ax2.plot(x_data, y, color=self.color_list[index], linestyle=self.linestyle_list[index],
+                         linewidth=linewidth, alpha=alpha, label=line_legend_label_list[index])
+
+        plt.tight_layout()
+
+        savepath = os.path.join(save_root, filename)
+        print(f"图片保存到:{savepath}")
+        plt.savefig(savepath)
+        # 展示图片
+        if is_show:
+            plt.show()
+        # 释放内存
+        plt.close()
+
+
+
