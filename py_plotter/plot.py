@@ -758,7 +758,7 @@ class Plotter(Pyplot_config):
                             bar_y_max=None, line_y_min=None, line_y_max=None,
                             x_grid=False, y_grid=True, save_root="./", filename="demo.png", is_hatch=False,
                             is_show=False,
-                            line_data_list=None, line_legend_label_list=None, is_marker=False, linewidth=2, alpha=1):
+                            line_data_list=None, is_marker=False, linewidth=2, alpha=1):
         plt.figure(figsize=self.figsize, dpi=self.dpi)
         ax = plt.subplot(111)
         # 设置轴的标签字体和大小
@@ -832,10 +832,10 @@ class Plotter(Pyplot_config):
             if is_marker:
                 ax2.plot(x_data, y, color=self.color_list[index], linestyle=self.linestyle_list[index],
                          marker=self.marker_list[index], linewidth=linewidth, alpha=alpha,
-                         label=line_legend_label_list[index])
+                         label=legend_label_list[index])
             else:
                 ax2.plot(x_data, y, color=self.color_list[index], linestyle=self.linestyle_list[index],
-                         linewidth=linewidth, alpha=alpha, label=line_legend_label_list[index])
+                         linewidth=linewidth, alpha=alpha, label=legend_label_list[index])
 
         plt.tight_layout()
 
