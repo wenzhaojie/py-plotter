@@ -756,7 +756,7 @@ class Plotter(Pyplot_config):
                             legend_title="legend", legend_ncol=1, bbox_to_anchor=None,
                             bar_y_tick_ndigits=2, line_y_tick_ndigits=2,
                             legend_loc="best", x_data=None, bar_data_list=None, legend_label_list=None, bar_y_min=None,
-                            bar_y_max=None, line_y_min=None, line_y_max=None,
+                            bar_y_max=None, line_y_min=None, line_y_max=None, x_label_rotation=0,
                             x_grid=False, y_grid=True, save_root="./", filename="demo.png", is_hatch=False,
                             is_show=False, marker_size=5, marker_face_color='yellow', marker_edge_color='red',
                             line_data_list=None, is_marker=False, linewidth=2, alpha=1):
@@ -790,7 +790,7 @@ class Plotter(Pyplot_config):
 
         # 添加x轴名称
         plt.xticks([r + (len(bar_data_list) - 1) / 2 * self.bar_width for r in range(len(x_data))], x_data,
-                   size=self.label_size, fontproperties=font_property)
+                   size=self.label_size, fontproperties=font_property, rotation=x_label_rotation)
         plt.yticks(size=self.label_size, fontproperties=font_property)
 
         # 让角标变0
