@@ -173,7 +173,7 @@ class Plotter(Pyplot_config):
 
     # 绘制条形图
     def plot_bars(self, x_label="x", y_label="y", legend_title="legend", legend_ncol=1, bbox_to_anchor=None,
-                  y_tick_ndigits=2,
+                  y_tick_ndigits=2, x_label_rotation=0,
                   legend_loc="best", x_data=None, bar_data_list=None, legend_label_list=None, y_min=None, y_max=None,
                   x_grid=False, y_grid=True, save_root="./", filename="demo.png", is_hatch=False,
                   is_show=False):
@@ -199,9 +199,9 @@ class Plotter(Pyplot_config):
                    edgecolor=self.edge_color_list[index], label=legend_label_list[index],
                    hatch=hatch_list[index])  # 创建柱子
 
-        # 添加x轴名称
+        # 添加x轴名称，并设置旋转角度
         plt.xticks([r + (len(bar_data_list) - 1) / 2 * self.bar_width for r in range(len(x_data))], x_data,
-                   size=self.label_size, fontproperties=font_property)
+                   size=self.label_size, fontproperties=font_property, rotation=x_label_rotation)
         plt.yticks(size=self.label_size, fontproperties=font_property)
 
         # 让角标变0
@@ -754,9 +754,9 @@ class Plotter(Pyplot_config):
     # 画柱状图和折线图在同一张图上
     def plot_bars_and_lines(self, x_label="x", bar_y_label="y", line_y_label="y",
                             legend_title="legend", legend_ncol=1, bbox_to_anchor=None,
-                            bar_y_tick_ndigits=2, line_y_tick_ndigits=2,
+                            bar_y_tick_ndigits=2, line_y_tick_ndigits=2, x_label_rotation=0,
                             legend_loc="best", x_data=None, bar_data_list=None, legend_label_list=None, bar_y_min=None,
-                            bar_y_max=None, line_y_min=None, line_y_max=None, x_label_rotation=0,
+                            bar_y_max=None, line_y_min=None, line_y_max=None,
                             x_grid=False, y_grid=True, save_root="./", filename="demo.png", is_hatch=False,
                             is_show=False, marker_size=5, marker_face_color='yellow', marker_edge_color='red',
                             line_data_list=None, is_marker=False, linewidth=2, alpha=1):
