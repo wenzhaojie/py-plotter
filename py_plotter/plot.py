@@ -866,9 +866,9 @@ class Plotter(Pyplot_config):
         # 释放内存
         plt.close()
 
+
     def plot_bars_and_lines_with_legend(self, x_label="x", bar_y_label="y", line_y_label="y",
-                            bar_legend=True, line_legend=True, legend_title="legend", legend_ncol=1,
-                            bbox_to_anchor=None,
+                            legend_title="legend", legend_ncol=1, bbox_to_anchor=None,
                             bar_y_tick_ndigits=2, line_y_tick_ndigits=2, x_label_rotation=0,
                             legend_loc="best", x_data=None, bar_data_list=None, legend_label_list=None, bar_y_min=None,
                             bar_y_max=None, line_y_min=None, line_y_max=None,
@@ -877,79 +877,121 @@ class Plotter(Pyplot_config):
                             line_data_list=None, is_marker=False, linewidth=2, alpha=1):
         plt.figure(figsize=self.figsize, dpi=self.dpi)
         ax = plt.subplot(111)
-        # Set axis label font and size
+        # 设置轴的标签字体和大小
         font_property = FontProperties(fname=self.font_path, size=self.label_size)
         ax.set_xlabel(x_label, fontproperties=font_property)
         ax.set_ylabel(bar_y_label, fontproperties=font_property)
 
-        # Plot bars
+        # 分别画柱子
         r_base = np.arange(len(x_data))
-        # Optional hatching
+        # 是否用阴影hatch区别
         if is_hatch:
             hatch_list = self.hatch_list
         else:
             hatch_list = [None for _ in range(10)]
 
-        for index, (bar_label, bar_data) in enumerate(zip(legend_label_list, bar_data_list)):
-            r = [x + self.bar_width * index for x in r_base]
-            ax.bar(r, bar_data, color=self.color_list[index], width=self.bar_width,
-                   edgecolor=self.edge_color_list[index], label=bar_label if bar_legend else None,
-                   hatch=hatch_list[index])
+        if legend_label_list is not None:
 
-        # Set x-axis ticks
-        plt.xticks([r + (len(bar_data_list) - 1) / 2 * self.bar_width for r in r_base], x_data,
+            for index, (bar_label, bar_data) in enumerate(zip(legend_label_list, bar_data_list)):
+                r = [x + self.bar_width * (index) for x in r_base]
+                ax.bar(r, bar_data, color=self.color_list[index], width=self.bar_width,
+                       edgecolor=self.edge_color_list[index], label=legend_label_list[index],
+                       hatch=hatch_list[index])
+        else:
+            for index, bar_data in enumerate(bar_data_list):
+                r = [x + self.bar_width * (index) for x in r_base]
+                ax.bar(r, bar_data, color=self.color_list[index], width=self.bar_width,
+                       edgecolor=self.edge_color_list[index], hatch=hatch_list[index])
+
+        # 添加x轴名称
+        plt.xticks([r + (len(bar_data_list) - 1) / 2 * self.bar_width for r in range(len(x_data))], x_data,
                    size=self.label_size, fontproperties=font_property, rotation=x_label_rotation)
         plt.yticks(size=self.label_size, fontproperties=font_property)
 
-        # Format y-axis labels
-        ax.yaxis.set_major_formatter(CustomFormatter(ndigits=bar_y_tick_ndigits))
+        # 让角标变0
+        ax = plt.gca()
+        y_formatter = CustomFormatter(ndigits=bar_y_tick_ndigits)
+        ax.yaxis.set_major_formatter(y_formatter)
 
-        # Create legend
-        if bar_legend:
+        # 创建图例
+        if legend_label_list is not None:
             font_property_legend = FontProperties(fname=self.font_path, size=self.legend_size)
             legend = plt.legend(fontsize=self.legend_size, title=legend_title, loc=legend_loc, ncol=legend_ncol,
                                 bbox_to_anchor=bbox_to_anchor, prop=font_property_legend)
             legend.get_title().set_fontsize(self.legend_size)
             legend.get_title().set_fontproperties(font_property_legend)
 
-        # Grid lines
-        if x_grid and y_grid:
-            plt.grid(axis="both")
-        elif x_grid:
-            plt.grid(axis="x")
-        elif y_grid:
-            plt.grid(axis="y")
+        # 添加图例条目
+        ax.plot([], [], 'b-', label='MAE')  # 蓝色表示MAE
+        ax.plot([], [], 'r-', label='计算时间')  # 红色表示计算时间
 
-        # Set y-limits for bars
+        # 创建图例
+        legend = plt.legend(title=legend_title, loc=legend_loc, ncol=legend_ncol, bbox_to_anchor=bbox_to_anchor,
+                            prop=FontProperties(fname=self.font_path, size=self.legend_size))
+        legend.get_title().set_fontsize(self.legend_size)
+        legend.get_title().set_fontproperties(font_property)
+
+        # 网格线
+        cmd: Literal['both', 'x', 'y']
+        if x_grid and y_grid:
+            cmd = "both"
+            plt.grid(axis=cmd)
+        else:
+            if x_grid:
+                cmd = "x"
+                plt.grid(axis=cmd)
+            if y_grid:
+                cmd = "y"
+                plt.grid(axis=cmd)
+
+        # 设置ylim
         if bar_y_min is not None and bar_y_max is not None:
             plt.ylim(bar_y_min, bar_y_max)
 
-        # Setup a secondary y-axis for line plots
+        # 创建第二个y轴用于折线图
         ax2 = ax.twinx()
-        ax2.yaxis.set_major_formatter(CustomFormatter(ndigits=line_y_tick_ndigits))
+        # 让角标变0
+        y_formatter = CustomFormatter(ndigits=line_y_tick_ndigits)
+        ax2.yaxis.set_major_formatter(y_formatter)
+        # 设置轴的标签字体和大小
         ax2.set_ylabel(line_y_label, fontproperties=font_property)
+        # 设置 ax2的 ytick fontproperties
+        plt.yticks(size=self.label_size, fontproperties=font_property)
+        # 设置line 的 ylim
+        if line_y_min is not None and line_y_max is not None:
+            plt.ylim(line_y_min, line_y_max)
 
-        # Plot lines
-        for index, y in enumerate(line_data_list):
-            if is_marker:
-                ax2.plot(x_data, y, color=self.color_list[index], linestyle=self.linestyle_list[index],
-                         marker=self.marker_list[index], linewidth=linewidth, alpha=alpha,
-                         label=legend_label_list[index] if line_legend else None)
-            else:
-                ax2.plot(x_data, y, color=self.color_list[index], linestyle=self.linestyle_list[index],
-                         linewidth=linewidth, alpha=alpha, label=legend_label_list[index] if line_legend else None)
-
-        # Optional separate legend for lines
-        if line_legend:
-            ax2.legend(fontsize=self.legend_size, loc=legend_loc)
+        # 画折线
+        if legend_label_list is not None:
+            for index, y in enumerate(line_data_list):
+                if is_marker:
+                    ax2.plot(x_data, y, color=self.color_list[index], linestyle=self.linestyle_list[index],
+                             marker=self.marker_list[index], linewidth=linewidth, alpha=alpha,
+                             label=legend_label_list[index])
+                else:
+                    ax2.plot(x_data, y, color=self.color_list[index], linestyle=self.linestyle_list[index],
+                             linewidth=linewidth, alpha=alpha, label=legend_label_list[index])
+        else:
+            for index, y in enumerate(line_data_list):
+                if is_marker:
+                    ax2.plot(x_data, y, color=self.backup_color_list[index], linestyle=self.linestyle_list[index],
+                             marker=self.marker_list[index], linewidth=linewidth, alpha=alpha, markersize=marker_size, markerfacecolor=marker_face_color, markeredgecolor=marker_edge_color)
+                else:
+                    ax2.plot(x_data, y, color=self.backup_color_list[index], linestyle=self.linestyle_list[index],
+                             linewidth=linewidth, alpha=alpha)
 
         plt.tight_layout()
+
         savepath = os.path.join(save_root, filename)
         print(f"图片保存到:{savepath}")
         plt.savefig(savepath)
+        # 展示图片
         if is_show:
             plt.show()
+        # 释放内存
         plt.close()
+
+
 
 
 
