@@ -927,7 +927,7 @@ class Plotter(Pyplot_config):
 
         # 创建图例
         legend = plt.legend(title=legend_title, loc=legend_loc, ncol=legend_ncol, bbox_to_anchor=bbox_to_anchor,
-                            prop=FontProperties(fname=self.font_path, size=self.legend_size))
+                            prop=font_property)
         legend.get_title().set_fontsize(self.legend_size)
         legend.get_title().set_fontproperties(font_property)
 
